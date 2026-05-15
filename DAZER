@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAZER</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111;
+    --border: #222;
+    --accent: #c8a96e;
+    --text: #f0f0f0;
+    --muted: #555;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* HEADER */
+  .header {
+    width: 100%;
+    padding: 28px 0 10px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #0f0f0f 0%, var(--bg) 100%);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    letter-spacing: 14px;
+    color: var(--accent);
+    text-shadow: 0 0 40px rgba(200,169,110,0.3);
+    line-height: 1;
+  }
+
+  .tagline {
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* LOGIN SCREEN */
+  #loginScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+    padding: 40px 20px;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .login-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .login-box label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .login-box input[type="password"] {
+    width: 100%;
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+    letter-spacing: 8px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border 0.2s;
+  }
+
+  .login-box input[type="password"]:focus {
+    border-color: var(--accent);
+  }
+
+  .btn-enter {
+    background: var(--accent);
+    color: #0a0a0a;
+    border: none;
+    border-radius: 3px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 6px;
+    padding: 12px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 4px;
+  }
+
+  .btn-enter:hover { opacity: 0.85; }
+
+  .login-error {
+    color: #e05555;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-align: center;
+    display: none;
+  }
+
+  /* MAIN APP */
+  #mainApp {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    max-width: 700px;
+    padding: 24px 16px;
+    gap: 16px;
+    flex: 1;
+    animation: fadeIn 0.4s ease;
+  }
+
+  /* INPUT AREA */
+  .input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .note-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+    padding: 16px;
+    outline: none;
+    resize: none;
+    min-height: 90px;
+    transition: border 0.2s;
+  }
+
+  .note-input:focus { border-color: var(--accent); }
+
+  .btn-save {
+    align-self: flex-end;
+    background: var(--accent);
+    color: #0a0a0a;
+    border: none;
+    border-radius: 3px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 4px;
+    padding: 10px 28px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn-save:hover { opacity: 0.85; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  /* NOTES LIST */
+  .notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .note-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: border-color 0.2s;
+  }
+
+  .note-card:hover { border-color: #333; }
+
+  .note-text {
+    flex: 1;
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--text);
+    word-break: break-word;
+  }
+
+  .note-date {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .note-actions-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 3px;
+    transition: color 0.2s, background 0.2s;
+    line-height: 1;
+  }
+
+  .note-actions-btn:hover {
+    color: var(--accent);
+    background: rgba(200,169,110,0.08);
+  }
+
+  /* HOLD PROGRESS BAR */
+  .hold-bar {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    background: var(--accent);
+    width: 0%;
+    border-radius: 0 0 4px 4px;
+    transition: width linear;
+    pointer-events: none;
+  }
+
+  /* FULLSCREEN NOTE */
+  #fullscreenOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 100;
+    flex-direction: column;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .fs-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .fs-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 8px;
+    color: var(--accent);
+  }
+
+  .fs-close {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    padding: 8px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .fs-close:hover { border-color: var(--accent); color: var(--accent); }
+
+  .fs-content {
+    flex: 1;
+    padding: 36px 32px;
+    font-size: 22px;
+    line-height: 1.7;
+    color: var(--text);
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* MODAL OVERLAY */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal-box {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    padding: 36px 32px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: slideUp 0.25s ease;
+  }
+
+  .modal-icon {
+    font-size: 36px;
+    text-align: center;
+  }
+
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 6px;
+    color: var(--accent);
+    text-align: center;
+  }
+
+  .modal-sub {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .modal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-btn {
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    padding: 14px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: border-color 0.2s, background 0.2s;
+    text-align: left;
+  }
+
+  .modal-btn:hover { border-color: var(--accent); background: rgba(200,169,110,0.06); }
+
+  .modal-btn.danger:hover { border-color: #e05555; background: rgba(224,85,85,0.07); color: #e05555; }
+
+  .modal-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent);
+    min-width: 24px;
+  }
+
+  .modal-btn.danger .modal-num { color: #e05555; }
+
+  .modal-cancel {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    padding: 6px;
+    transition: color 0.2s;
+  }
+
+  .modal-cancel:hover { color: var(--text); }
+
+  /* DELETE CONFIRM MODAL */
+  .modal-input {
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    letter-spacing: 6px;
+    padding: 12px 16px;
+    outline: none;
+    width: 100%;
+    transition: border 0.2s;
+    text-align: center;
+  }
+
+  .modal-input:focus { border-color: var(--accent); }
+
+  .modal-error {
+    color: #e05555;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-align: center;
+    display: none;
+  }
+
+  /* REQUEST MODAL */
+  .color-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .color-option {
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+  }
+
+  .color-option:hover { opacity: 0.85; transform: translateX(3px); }
+
+  .color-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* PAGE COLORS */
+  .c-negra   { background: #1a1a1a; color: #ccc; border-color: #333; }
+  .c-azul    { background: #0d1f3c; color: #7ab3f7; border-color: #1e3a6e; }
+  .c-roja    { background: #2a0a0a; color: #f77a7a; border-color: #5c1a1a; }
+  .c-moral   { background: #1a0a2a; color: #c27af7; border-color: #3a1a5c; }
+  .c-rosa    { background: #2a0d1a; color: #f7a8c4; border-color: #5c1a38; }
+
+  .dot-negra { background: #888; }
+  .dot-azul  { background: #7ab3f7; }
+  .dot-roja  { background: #f77a7a; }
+  .dot-moral { background: #c27af7; }
+  .dot-rosa  { background: #f7a8c4; }
+
+  /* SUCCESS TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: #1a1a1a;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    border-radius: 4px;
+    z-index: 999;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 40px 0;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">DAZER</div>
+  <div class="tagline">Sistema de Notas</div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div>
+      <label>Contraseña</label>
+      <input type="password" id="loginPass" placeholder="••••" onkeydown="if(event.key==='Enter')tryLogin()">
+    </div>
+    <button class="btn-enter" onclick="tryLogin()">ENTRAR</button>
+    <div class="login-error" id="loginError">CONTRASEÑA INCORRECTA</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="mainApp">
+  <div class="input-area">
+    <textarea class="note-input" id="noteInput" placeholder="Escribe aquí..."></textarea>
+    <button class="btn-save" onclick="saveNote()">GUARDAR</button>
+  </div>
+  <hr class="divider">
+  <div class="notes-list" id="notesList"></div>
+</div>
+
+<!-- FULLSCREEN -->
+<div id="fullscreenOverlay" style="display:none; position:fixed; inset:0; background:var(--bg); z-index:100; flex-direction:column;">
+  <div class="fs-header">
+    <div class="fs-title">DAZER</div>
+    <button class="fs-close" onclick="closeFullscreen()">✕ CERRAR</button>
+  </div>
+  <div class="fs-content" id="fsContent"></div>
+</div>
+
+<!-- MODAL: OPCIONES (hold) -->
+<div class="modal-overlay" id="optionsModal">
+  <div class="modal-box">
+    <div class="modal-icon">⚡</div>
+    <div class="modal-title">OPCIONES</div>
+    <div class="modal-sub">¿Qué deseas hacer?</div>
+    <div class="modal-options">
+      <button class="modal-btn danger" onclick="openDeleteModal()">
+        <span class="modal-num">1</span> Eliminar nota
+      </button>
+      <button class="modal-btn" onclick="openRequestModal()">
+        <span class="modal-num">2</span> Pedir
+      </button>
+    </div>
+    <button class="modal-cancel" onclick="closeModal('optionsModal')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL: ELIMINAR (pide código) -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal-box">
+    <div class="modal-icon">🗑️</div>
+    <div class="modal-title">ELIMINAR</div>
+    <div class="modal-sub">Ingresa el código para continuar</div>
+    <input type="password" class="modal-input" id="deleteCode" placeholder="••••" onkeydown="if(event.key==='Enter')confirmDelete()">
+    <div class="modal-error" id="deleteError">CÓDIGO INCORRECTO</div>
+    <div class="modal-options">
+      <button class="modal-btn danger" onclick="confirmDelete()">
+        <span class="modal-num">✓</span> Confirmar eliminación
+      </button>
+    </div>
+    <button class="modal-cancel" onclick="closeModal('deleteModal')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL: PEDIR -->
+<div class="modal-overlay" id="requestModal">
+  <div class="modal-box">
+    <div class="modal-icon">✨</div>
+    <div class="modal-title">PEDIR</div>
+    <div class="modal-sub">Selecciona una página</div>
+    <div class="color-grid">
+      <div class="color-option c-negra" onclick="requestColor('Negra')">
+        <span class="color-dot dot-negra"></span> Negra
+      </div>
+      <div class="color-option c-azul" onclick="requestColor('Azul')">
+        <span class="color-dot dot-azul"></span> Azul
+      </div>
+      <div class="color-option c-roja" onclick="requestColor('Roja')">
+        <span class="color-dot dot-roja"></span> Roja
+      </div>
+      <div class="color-option c-moral" onclick="requestColor('Moral')">
+        <span class="color-dot dot-moral"></span> Moral
+      </div>
+      <div class="color-option c-rosa" onclick="requestColor('Rosa Edición Especial')">
+        <span class="color-dot dot-rosa"></span> Rosa Edición Especial
+      </div>
+    </div>
+    <button class="modal-cancel" onclick="closeModal('requestModal')">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL: CONFIRMAR PEDIDO -->
+<div class="modal-overlay" id="confirmRequestModal">
+  <div class="modal-box">
+    <div class="modal-icon" id="confirmIcon">🎨</div>
+    <div class="modal-title">CONFIRMAR PEDIDO</div>
+    <div class="modal-sub" id="confirmSub">¿Confirmas tu pedido?</div>
+    <div class="modal-options">
+      <button class="modal-btn" onclick="sendRequest()">
+        <span class="modal-num">✓</span> Sí, pedir
+      </button>
+    </div>
+    <button class="modal-cancel" onclick="closeModal('confirmRequestModal')">No, cancelar</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const PASS = 'SEXY';
+  const DELETE_CODE = 'SEXY';
+  let notes = JSON.parse(localStorage.getItem('dazer_notes') || '[]');
+  let activeNoteId = null;
+  let holdTimer = null;
+  let holdBarTimer = null;
+
+  function tryLogin() {
+    const val = document.getElementById('loginPass').value;
+    const err = document.getElementById('loginError');
+    if (val === PASS) {
+      document.getElementById('loginScreen').style.display = 'none';
+      const app = document.getElementById('mainApp');
+      app.style.display = 'flex';
+      renderNotes();
+    } else {
+      err.style.display = 'block';
+      document.getElementById('loginPass').value = '';
+      setTimeout(() => err.style.display = 'none', 2000);
+    }
+  }
+
+  function saveNote() {
+    const text = document.getElementById('noteInput').value.trim();
+    if (!text) return;
+    const note = { id: Date.now(), text, date: new Date().toLocaleDateString('es-MX') };
+    notes.unshift(note);
+    localStorage.setItem('dazer_notes', JSON.stringify(notes));
+    document.getElementById('noteInput').value = '';
+    renderNotes();
+    showToast('NOTA GUARDADA');
+  }
+
+  function renderNotes() {
+    const list = document.getElementById('notesList');
+    if (!notes.length) {
+      list.innerHTML = '<div class="empty">Sin notas aún</div>';
+      return;
+    }
+    list.innerHTML = notes.map(n => `
+      <div class="note-card" id="card-${n.id}"
+           ondblclick="openFullscreen(${n.id})">
+        <div class="note-text">${n.text}</div>
+        <div class="note-date">${n.date}</div>
+        <button class="note-actions-btn"
+          onmousedown="startHold(event,${n.id})"
+          onmouseup="cancelHold()"
+          onmouseleave="cancelHold()"
+          ontouchstart="startHold(event,${n.id})"
+          ontouchend="cancelHold()"
+        >⋮</button>
+        <div class="hold-bar" id="bar-${n.id}"></div>
+      </div>
+    `).join('');
+  }
+
+  function startHold(e, id) {
+    e.preventDefault();
+    activeNoteId = id;
+    const bar = document.getElementById(`bar-${id}`);
+    bar.style.transition = 'width 5s linear';
+    bar.style.width = '100%';
+    holdTimer = setTimeout(() => {
+      bar.style.width = '0%';
+      bar.style.transition = 'none';
+      openModal('optionsModal');
+    }, 5000);
+  }
+
+  function cancelHold() {
+    clearTimeout(holdTimer);
+    if (activeNoteId) {
+      const bar = document.getElementById(`bar-${activeNoteId}`);
+      if (bar) { bar.style.transition = 'width 0.2s'; bar.style.width = '0%'; }
+    }
+  }
+
+  function openFullscreen(id) {
+    const note = notes.find(n => n.id === id);
+    if (!note) return;
+    activeNoteId = id;
+    document.getElementById('fsContent').textContent = note.text;
+    const fs = document.getElementById('fullscreenOverlay');
+    fs.style.display = 'flex';
+  }
+
+  function closeFullscreen() {
+    document.getElementById('fullscreenOverlay').style.display = 'none';
+  }
+
+  function openModal(id) { document.getElementById(id).classList.add('active'); }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+    if (id === 'deleteModal') {
+      document.getElementById('deleteCode').value = '';
+      document.getElementById('deleteError').style.display = 'none';
+    }
+  }
+
+  function openDeleteModal() {
+    closeModal('optionsModal');
+    setTimeout(() => openModal('deleteModal'), 200);
+  }
+
+  function confirmDelete() {
+    const code = document.getElementById('deleteCode').value;
+    const err = document.getElementById('deleteError');
+    if (code === DELETE_CODE) {
+      notes = notes.filter(n => n.id !== activeNoteId);
+      localStorage.setItem('dazer_notes', JSON.stringify(notes));
+      closeModal('deleteModal');
+      renderNotes();
+      showToast('NOTA ELIMINADA');
+    } else {
+      err.style.display = 'block';
+      document.getElementById('deleteCode').value = '';
+      setTimeout(() => err.style.display = 'none', 2000);
+    }
+  }
+
+  function openRequestModal() {
+    closeModal('optionsModal');
+    setTimeout(() => openModal('requestModal'), 200);
+  }
+
+  let selectedColor = '';
+  function requestColor(color) {
+    selectedColor = color;
+    closeModal('requestModal');
+    const icons = { 'Negra': '⬛', 'Azul': '🔵', 'Roja': '🔴', 'Moral': '🟣', 'Rosa Edición Especial': '🌸' };
+    document.getElementById('confirmIcon').textContent = icons[color] || '✨';
+    document.getElementById('confirmSub').textContent = `Página: ${color}`;
+    setTimeout(() => openModal('confirmRequestModal'), 200);
+  }
+
+  function sendRequest() {
+    closeModal('confirmRequestModal');
+    showToast(`PEDIDO ENVIADO: ${selectedColor.toUpperCase()}`);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+</script>
+</body>
+</html>
