@@ -1,814 +1,766 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>DAZER</title>
-  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkRBWkVSIiwKICAic2hvcnRfbmFtZSI6ICJEQVpFUiIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGEwYTBhIiwKICAidGhlbWVfY29sb3IiOiAiIzBhMGEwYSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0NzdmclMjB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnJTIwdmlld0JveD0nMCAwIDEwMCAxMDAnJTNFJTNDZGVmcyUzRSUzQ2xpbmVhckdyYWRpZW50JTIwaWQ9J2cnJTIweDE9JzAlMjUlMjB5MT0nMCUyNSclMjB4Mj0nMTAwJTI1JTIweTI9JzEwMCUyNSclM0UlM0NzdG9wJTIwb2Zmc2V0PScwJTI1JTIwc3RvcC1jb2xvcj0nJTIzYTAyMGYwJy8lM0UlM0NzdG9wJTIwb2Zmc2V0PScxMDAlMjUnMjBzdG9wLWNvbG9yPSclMjM3YTBiYzAnLyUzRSUzQy9saW5lYXJHcmFkaWVudCUzRSUzQy9kZWZzJTNFJTNDcmVjdCUyMHdpZHRoPScxMDAnMjBoZWlnaHQ9JzEwMCclMjByeD0nMjAnMjBmaWxsPSd1cmwoJTIzZyknJTIwc3Ryb2tlPSclMjNmZmYnMjBzdHJva2Utd2lkdGg9JzMnLyUzRSUzQ3RleHQlMjB4PSc1MCclMjB5PSc3MiclMjBmb250LWZhbWlseT0nQXJpYWwlMjBCbGFjayclMjBmb250LXNpemU9JzYwJTIwZmlsbD0nd2hpdGUnJTIwdGV4dC1hbmNob3I9J21pZGRsZSclM0VEJTNDL3RleHQlM0UlM0NjaXJjbGUlMjBjeD0nNTAnMjBjeT0nNTAnMjByPSc0MiclMjBmaWxsPSdub25lJTIwc3Ryb2tlPSclMjNmZjAwZmYnMjBzdHJva2Utd2lkdGg9JzInMjBzdHJva2UtZGFzaGFycmF5PSc4JTIwNCcvJTNFJTNDY2lyY2xlJTIwY3g9JzUwJTIwY3k9JzUwJTIwcj0nMzgnMjBmaWxsPSdub25lJTIwc3Ryb2tlPSclMjM5ZjAwZmYnMjBzdHJva2Utd2lkdGg9JzEnMjBzdHJva2UtZGFzaGFycmF5PSc1JTIwNScvJTNFJTNDY2lyY2xlJTIwY3g9JzUwJTIwY3k9JzUwJTIwcj0nMzQnMjBmaWxsPSdub25lJTIwc3Ryb2tlPSclMjM3YjAwZmYnMjBzdHJva2Utd2lkdGg9JzEnLyUzRSUzQy9zdmclM0UiLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
-  <style>
-    :root {
-      --bg: #0a0a0a;
-      --surface: #1a1a1a;
-      --border: #333;
-      --text: #f0f0f0;
-      --muted: #777;
-      --online: #2ecc71;
-      --offline: #e74c3c;
-      --radius: 8px;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    /* INTRO ANIMATION */
-    #introOverlay {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      animation: fadeOutIntro 0.8s 4s forwards;
-    }
-    #introCanvas {
-      width: 300px;
-      height: 300px;
-    }
-    #introText {
-      font-family: 'Impact', 'Arial Black', sans-serif;
-      font-size: 60px;
-      letter-spacing: 15px;
-      color: #fff;
-      opacity: 0;
-      animation: showText 0.8s 2s forwards;
-      text-shadow: 0 0 30px rgba(255,255,255,0.8);
-    }
-    @keyframes showText {
-      to { opacity: 1; letter-spacing: 8px; }
-    }
-    @keyframes fadeOutIntro {
-      to { opacity: 0; visibility: hidden; }
-    }
-    .header {
-      padding: 12px 16px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      display: none;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      font-family: 'Impact', 'Arial Black', sans-serif;
-      font-size: 28px;
-      letter-spacing: 4px;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(255,255,255,0.3);
-    }
-    .icon-btn {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 16px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .status-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    .screen {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-    }
-    .screen.active { display: flex; }
-    .user-tile-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 20px;
-      max-width: 500px;
-      margin: 30px auto;
-    }
-    .user-tile {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px 10px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      transition: 0.2s;
-    }
-    .user-tile:hover { border-color: #fff; }
-    .tile-avatar {
-      width: 80px; height: 80px;
-      border-radius: 20%;
-      background: #2a2a2a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      font-weight: bold;
-      color: #fff;
-      overflow: hidden;
-    }
-    .tile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .tile-name { font-size: 16px; font-weight: 600; }
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .modal-overlay.active { display: flex; }
-    .modal-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      width: 100%;
-      max-width: 360px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .input {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px;
-      color: var(--text);
-      font-size: 16px;
-      outline: none;
-      width: 100%;
-    }
-    .input:focus { border-color: #fff; }
-    .btn {
-      background: #fff;
-      color: #000;
-      border: none;
-      border-radius: var(--radius);
-      padding: 12px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      text-align: center;
-      transition: opacity 0.2s;
-      letter-spacing: 1px;
-    }
-    .btn:hover { opacity: 0.85; }
-    .btn.secondary {
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .error-msg {
-      color: var(--offline);
-      font-size: 13px;
-      display: none;
-      text-align: center;
-    }
-    .nav-bar {
-      display: flex;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      height: 60px;
-      align-items: center;
-      justify-content: space-around;
-    }
-    .nav-item {
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-      padding: 8px 12px;
-      letter-spacing: 1px;
-    }
-    .nav-item.active { color: #fff; border-bottom: 2px solid #fff; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-    .content-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      aspect-ratio: 1/1;
-      overflow: hidden;
-    }
-    .content-card img, .content-card video {
-      width: 100%; height: 100%; object-fit: cover;
-    }
-    .reel-container {
-      height: calc(100vh - 140px);
-      overflow-y: scroll;
-      scroll-snap-type: y mandatory;
-    }
-    .reel-item {
-      scroll-snap-align: start;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #000;
-      border-bottom: 1px solid var(--border);
-    }
-    .reel-item video { width: 100%; max-height: 100%; }
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 8px 0;
-    }
-    .msg {
-      max-width: 70%;
-      padding: 10px 14px;
-      border-radius: 18px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      font-size: 14px;
-    }
-    .msg.own { align-self: flex-end; background: #fff; color: #000; }
-    .chat-input-area { display: flex; gap: 8px; }
-    .user-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 8px;
-      cursor: pointer;
-    }
-    .file-label {
-      border: 1px dashed var(--border);
-      padding: 16px;
-      text-align: center;
-      cursor: pointer;
-      border-radius: var(--radius);
-    }
-    .small-text { font-size: 13px; color: var(--muted); }
-    hr { border: 0.5px solid var(--border); margin: 10px 0; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover, maximum-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="DAZER">
+    <meta name="description" content="Plataforma épica - PAPIROMESA | ZALGERT | DAZER">
+    <title>DAZER - Plataforma Épica</title>
+
+    <!-- Fuentes (carga asíncrona) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --gray: #888888;
+            --light-gray: #cccccc;
+            --accent: #ffffff; /* calor monocromático */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Orbitron', 'Rajdhani', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        /* =============================================
+           PANTALLAS DE CARGA (SPLASH SCREENS)
+           ============================================= */
+        .splash-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            pointer-events: all;
+            background: #000000;
+            transition: opacity 0.3s ease;
+        }
+        .splash-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease 0.2s;
+        }
+        .splash-overlay.fully-removed {
+            display: none;
+        }
+
+        .splash-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .epic-text {
+            font-family: 'Orbitron', 'Rajdhani', 'Impact', sans-serif;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #ffffff;
+            animation: textEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        @keyframes textEntry {
+            0% { transform: scale(0) rotate(-8deg); opacity: 0; filter: blur(15px); }
+            60% { transform: scale(1.08) rotate(2deg); opacity: 1; filter: blur(0); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0); }
+        }
+
+        @keyframes textExit {
+            0% { transform: scale(1); opacity: 1; filter: blur(0); }
+            100% { transform: scale(1.8) rotate(5deg); opacity: 0; filter: blur(25px); }
+        }
+        .epic-text.exiting {
+            animation: textExit 0.5s ease-in forwards;
+        }
+
+        /* PAPIROMESA - Calor concentrado */
+        .splash-papiromesa .epic-text {
+            font-size: clamp(3rem, 8vw, 7rem);
+            text-shadow:
+                0 0 10px #ffffff,
+                0 0 30px rgba(255,255,255,0.8),
+                0 0 50px rgba(255,255,255,0.5),
+                0 0 80px rgba(255,255,255,0.3),
+                0 0 120px rgba(255,255,255,0.2);
+            animation: textEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+                       fireFlicker 0.08s ease-in-out infinite;
+            animation-delay: 0s, 0.6s;
+        }
+        @keyframes fireFlicker {
+            0%,100% { text-shadow: 0 0 10px #fff, 0 0 30px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.5); }
+            25% { text-shadow: 0 0 14px #fff, 0 0 36px rgba(255,255,255,0.9), 0 0 70px rgba(255,255,255,0.6), 0 0 90px rgba(255,255,255,0.3); }
+            50% { text-shadow: 0 0 8px #fff, 0 0 26px rgba(255,255,255,0.7), 0 0 54px rgba(255,255,255,0.4); }
+            75% { text-shadow: 0 0 16px #fff, 0 0 40px rgba(255,255,255,0.9), 0 0 74px rgba(255,255,255,0.6), 0 0 100px rgba(255,255,255,0.3); }
+        }
+        .splash-papiromesa .subtitle {
+            color: #aaaaaa;
+            font-size: 1.2rem;
+            letter-spacing: 0.4em;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        /* ZALGERT - Energía disonante */
+        .splash-zalgert .epic-text {
+            font-size: clamp(3rem, 8vw, 7rem);
+            color: #ffffff;
+            text-shadow:
+                0 0 8px #ffffff,
+                0 0 24px rgba(255,255,255,0.7),
+                0 0 50px rgba(255,255,255,0.4),
+                0 0 90px rgba(255,255,255,0.2);
+            animation: textEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+                       glitchShake 0.12s steps(2) infinite;
+            animation-delay: 0s, 0.6s;
+        }
+        @keyframes glitchShake {
+            0%,100% { transform: translate(0,0); }
+            20% { transform: translate(-3px,2px); text-shadow: 3px 0 #555, -3px 0 #999; }
+            40% { transform: translate(3px,-1px); text-shadow: -2px 0 #fff, 2px 0 #666; }
+            60% { transform: translate(-1px,-3px); text-shadow: 4px 0 #999, -4px 0 #ccc; }
+            80% { transform: translate(2px,3px); text-shadow: -3px 0 #fff, 3px 0 #888; }
+        }
+        .splash-zalgert .subtitle {
+            color: #888888;
+            font-size: 1.2rem;
+            letter-spacing: 0.4em;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        /* DAZER - Poder majestuoso (doble duración) */
+        .splash-dazer .epic-text {
+            font-size: clamp(3.5rem, 9vw, 8rem);
+            color: #ffffff;
+            text-shadow:
+                0 0 8px #ffffff,
+                0 0 20px rgba(255,255,255,0.8),
+                0 0 40px rgba(255,255,255,0.5),
+                0 0 80px rgba(255,255,255,0.3),
+                0 0 130px rgba(255,255,255,0.2);
+            animation: textEntry 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+                       majesticPulse 2s ease-in-out infinite;
+            animation-delay: 0s, 0.8s;
+        }
+        @keyframes majesticPulse {
+            0%,100% { transform: scale(1); text-shadow: 0 0 8px #fff, 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.5); }
+            50% { transform: scale(1.05); text-shadow: 0 0 18px #fff, 0 0 40px rgba(255,255,255,0.9), 0 0 70px rgba(255,255,255,0.6), 0 0 100px rgba(255,255,255,0.3); }
+        }
+        .splash-dazer .subtitle {
+            color: #aaaaaa;
+            font-size: 1.3rem;
+            letter-spacing: 0.5em;
+            animation: fadeInUp 1s ease 0.5s forwards;
+            opacity: 0;
+        }
+
+        /* Símbolo DAZER (CSS puro, sin emojis) */
+        .dazer-symbol {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 0.5rem;
+            animation: crownBounce 1.5s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        .dazer-symbol::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-bottom: 30px solid #ffffff;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
+        }
+        @keyframes crownBounce {
+            0%,100% { transform: translateY(0) scale(1); }
+            30% { transform: translateY(-20px) scale(1.1); }
+            50% { transform: translateY(0) scale(0.95); }
+            70% { transform: translateY(-8px) scale(1.05); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 0.9; transform: translateY(0); }
+        }
+
+        /* Flash de transición (blanco) */
+        .screen-flash {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #ffffff;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.08s ease;
+        }
+        .screen-flash.active {
+            opacity: 0.95;
+            transition: opacity 0.05s ease;
+        }
+
+        /* =============================================
+           MODAL DE INSTALACIÓN
+           ============================================= */
+        .install-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 8000;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        .install-modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .install-modal {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(255,255,255,0.1);
+            transform: translateY(30px);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .install-modal-overlay.active .install-modal {
+            transform: translateY(0);
+        }
+        .install-modal h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            color: #ffffff;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.1em;
+        }
+        .install-modal .modal-icon {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 1rem;
+            animation: pulse-icon 2s ease-in-out infinite;
+        }
+        .modal-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            box-shadow: 0 0 10px #ffffff;
+        }
+        @keyframes pulse-icon {
+            0%,100% { box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+            50% { box-shadow: 0 0 25px rgba(255,255,255,0.9); }
+        }
+        .install-modal p {
+            color: #aaa;
+            margin-bottom: 1.8rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .install-modal .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .install-modal button {
+            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.08em;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            background: #111;
+            color: #ffffff;
+            border: 1px solid #333;
+        }
+        .btn-install {
+            background: #ffffff !important;
+            color: #000000 !important;
+            font-weight: 900 !important;
+            border: none !important;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+            animation: btn-glow 2s ease-in-out infinite;
+        }
+        @keyframes btn-glow {
+            0%,100% { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+            50% { box-shadow: 0 0 35px rgba(255,255,255,0.6); }
+        }
+        .btn-install:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,255,255,0.5); }
+        .btn-quick-link { border-color: #555; }
+        .btn-quick-link:hover { background: #1a1a1a; border-color: #888; }
+        .btn-continue-web { border-color: #333; color: #777; font-size: 0.85rem !important; }
+        .btn-continue-web:hover { background: #1a1a1a; color: #aaa; }
+
+        /* =============================================
+           APP PRINCIPAL
+           ============================================= */
+        .app-container {
+            display: none;
+            min-height: 100vh;
+            min-height: 100dvh;
+            flex-direction: column;
+            background: #000000;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        .app-container.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .app-header {
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #222;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+        }
+        .app-header .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            color: #ffffff;
+        }
+
+        .app-content {
+            flex: 1;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .placeholder-card {
+            background: #0a0a0a;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+        .placeholder-card:hover {
+            border-color: #555;
+            color: #aaa;
+        }
+        .placeholder-card .card-icon {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #444;
+            border-radius: 50%;
+            position: relative;
+        }
+        /* Iconos CSS puros (sin emojis) */
+        .icon-video::after { content: ''; position: absolute; top: 50%; left: 55%; transform: translate(-50%,-50%); width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 14px solid #666; }
+        .icon-reel::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 12px; height: 16px; border: 2px solid #666; border-radius: 3px; }
+        .icon-chat::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 16px; height: 12px; border: 2px solid #666; border-radius: 4px; }
+        .icon-profile::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 10px; height: 10px; border: 2px solid #666; border-radius: 50%; box-shadow: 0 -8px 0 #666; }
+
+        .app-footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #444;
+            font-size: 0.8rem;
+            border-top: 1px solid #1a1a1a;
+            letter-spacing: 0.05em;
+        }
+        .app-footer .highlight {
+            color: #888;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            border: 1px solid #444;
+            z-index: 9000;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .epic-text { font-size: clamp(2.2rem, 12vw, 4rem) !important; }
+            .install-modal { padding: 1.8rem 1.2rem; }
+            .app-content { grid-template-columns: 1fr; padding: 1rem; }
+        }
+
+        body.no-scroll { overflow: hidden; }
+    </style>
 </head>
-<body>
+<body class="no-scroll">
 
-  <!-- INTRO SPLASH -->
-  <div id="introOverlay">
-    <canvas id="introCanvas" width="300" height="300"></canvas>
-    <div id="introText">DAZER</div>
-  </div>
-
-  <!-- HEADER -->
-  <div class="header" id="appHeader">
-    <div class="logo">DAZER</div>
-    <div class="header-actions" style="display:flex; gap:10px; align-items:center;">
-      <span id="headerUsername"></span>
-      <span class="status-dot" id="headerStatusDot" style="background:var(--online);"></span>
-      <button class="icon-btn" id="logoutBtn">X</button>
-    </div>
-  </div>
-
-  <!-- LOGIN SCREEN -->
-  <div id="loginScreen" class="screen active">
-    <div style="text-align:center; margin-top:20px;">
-      <div class="logo" style="font-size:36px; margin-bottom:10px;">DAZER</div>
-      <div id="userTilesContainer" class="user-tile-grid"></div>
-      <a id="pedirCuentaBtn" class="btn secondary" style="margin:10px; display:inline-block; text-decoration:none;"
-         href="https://wa.me/50668405099?text=Hola,%20quiero%20una%20cuenta%20en%20DAZER" target="_blank">
-        PEDIR CUENTA
-      </a>
-      <div style="margin-top:20px;">
-        <button class="btn secondary" id="openAdminLink" style="font-size:12px; opacity:0.6;">Admin</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: CONTRASENA DE PERFIL -->
-  <div class="modal-overlay" id="loginModal">
-    <div class="modal-box">
-      <h3 style="letter-spacing:2px;">CONTRASENA</h3>
-      <input type="password" class="input" id="profilePassInput" placeholder="Contrasena">
-      <button class="btn" id="confirmLoginBtn">ENTRAR</button>
-      <div class="error-msg" id="loginModalError"></div>
-      <button class="btn secondary" id="cancelLoginBtn">CANCELAR</button>
-    </div>
-  </div>
-
-  <!-- MODAL: PANEL ADMIN -->
-  <div class="modal-overlay" id="adminModal">
-    <div class="modal-box">
-      <h3 style="letter-spacing:2px;">ADMIN</h3>
-      <input type="password" class="input" id="adminCodeInput" placeholder="Codigo maestro">
-      <button class="btn" id="verifyAdminBtn">VERIFICAR</button>
-      <div class="error-msg" id="adminError"></div>
-      <div id="createForm" style="display:none; flex-direction:column; gap:12px;">
-        <input type="text" class="input" id="newUsername" placeholder="Nombre de usuario">
-        <div style="display:flex; gap:8px;">
-          <select class="input" id="daySelect" style="flex:1;"></select>
-          <select class="input" id="monthSelect" style="flex:1;"></select>
-          <select class="input" id="yearSelect" style="flex:1;"></select>
+    <!-- PAPIROMESA -->
+    <div class="splash-overlay splash-papiromesa" id="splash1">
+        <canvas class="splash-canvas" id="canvas1"></canvas>
+        <div class="splash-content">
+            <span class="epic-text" id="text1">PAPIROMESA</span>
+            <span class="subtitle">EL ORTO DESPUÉS DE PAPIROMESA</span>
         </div>
-        <input type="password" class="input" id="newPassword" placeholder="Contrasena del usuario">
-        <button class="btn" id="createUserBtn">CREAR USUARIO</button>
-        <div class="error-msg" id="createError"></div>
-      </div>
-      <button class="btn secondary" id="closeAdminModal">CANCELAR</button>
     </div>
-  </div>
 
-  <!-- MAIN APP -->
-  <div id="mainApp" style="display:none; flex:1; flex-direction:column;">
-    <!-- NAVEGAR -->
-    <div id="navegarScreen" class="screen active">
-      <div class="grid" id="contentGrid"></div>
-    </div>
-    <!-- REELS -->
-    <div id="reelsScreen" class="screen">
-      <div class="reel-container" id="reelContainer"></div>
-      <div style="padding:8px; text-align:center;">
-        <label class="file-label" for="reelUploadInput">Subir reel</label>
-        <input type="file" id="reelUploadInput" accept="video/*" style="display:none;" onchange="uploadReel()">
-      </div>
-    </div>
-    <!-- CHAT -->
-    <div id="chatScreen" class="screen">
-      <input type="text" class="input" id="chatSearchUser" placeholder="Buscar usuario..." style="margin-bottom:10px;">
-      <div id="chatUserList"></div>
-      <div id="chatWindow" style="display:none; flex:1; flex-direction:column;">
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input-area">
-          <input type="text" class="input" id="chatInput" placeholder="Mensaje..." style="flex:1;">
-          <button class="btn" id="sendMsgBtn" style="padding:10px 16px;">ENVIAR</button>
+    <!-- ZALGERT -->
+    <div class="splash-overlay splash-zalgert hidden fully-removed" id="splash2">
+        <canvas class="splash-canvas" id="canvas2"></canvas>
+        <div class="splash-content">
+            <span class="epic-text" id="text2">ZALGERT</span>
+            <span class="subtitle">CAOS Y PODER</span>
         </div>
-      </div>
-    </div>
-    <!-- PERFIL -->
-    <div id="perfilScreen" class="screen">
-      <div style="background:var(--surface); padding:16px; border-radius:var(--radius); margin-bottom:16px;">
-        <p><strong>Usuario:</strong> <span id="profileUsername"></span></p>
-        <p><strong>Email:</strong> <span id="profileEmail"></span></p>
-        <p><strong>Nacimiento:</strong> <span id="profileBirth"></span></p>
-        <label class="file-label" for="profilePicInput">Cambiar foto de perfil</label>
-        <input type="file" id="profilePicInput" accept="image/*" style="display:none;" onchange="uploadProfilePic()">
-        <br>
-        <label for="tileColorInput">Color de tu ficha:</label>
-        <input type="color" id="tileColorInput" value="#2a2a2a" style="width:100%; margin-top:5px;">
-        <button class="btn secondary" id="saveTileColorBtn" style="margin-top:5px;">Guardar color</button>
-      </div>
-      <hr>
-      <label class="file-label" for="stickerUploadInput">Subir sticker</label>
-      <input type="file" id="stickerUploadInput" accept="image/*" style="display:none;" onchange="uploadSticker()">
-      <hr>
-      <p class="small-text">Tus stickers:</p>
-      <div class="grid" id="profileStickers"></div>
-    </div>
-    <!-- IA (ERROR) -->
-    <div id="iaScreen" class="screen">
-      <div style="margin:auto; text-align:center; color:var(--muted);">
-        <p style="font-size:48px; letter-spacing:4px;">[ IA ]</p>
-        <p>ERROR: modulo no disponible</p>
-      </div>
     </div>
 
-    <!-- NAV BAR -->
-    <div class="nav-bar">
-      <button class="nav-item active" data-screen="navegarScreen">NAVEGAR</button>
-      <button class="nav-item" data-screen="reelsScreen">REELS</button>
-      <button class="nav-item" data-screen="chatScreen">CHAT</button>
-      <button class="nav-item" data-screen="perfilScreen">PERFIL</button>
-      <button class="nav-item" data-screen="iaScreen">IA</button>
+    <!-- DAZER -->
+    <div class="splash-overlay splash-dazer hidden fully-removed" id="splash3">
+        <canvas class="splash-canvas" id="canvas3"></canvas>
+        <div class="splash-content">
+            <div class="dazer-symbol"></div>
+            <span class="epic-text" id="text3">DAZER</span>
+            <span class="subtitle">LEYENDA FORJADA</span>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // ==================== DATABASE ====================
-    const STORAGE = 'dazer_db';
-    const MASTER_CODE = '29112009';
-    let DB = { users: {}, chats: {}, globalReels: [] };
-    let currentUser = null;
+    <div class="screen-flash" id="screenFlash"></div>
 
-    function saveDB() { localStorage.setItem(STORAGE, JSON.stringify(DB)); }
-    function loadDB() {
-      let s = localStorage.getItem(STORAGE);
-      if (s) { try { DB = JSON.parse(s); } catch(e) { resetDB(); } }
-      else resetDB();
-    }
-    function resetDB() { DB = { users: {}, chats: {}, globalReels: [] }; saveDB(); }
+    <!-- MODAL INSTALACIÓN -->
+    <div class="install-modal-overlay" id="installModalOverlay">
+        <div class="install-modal">
+            <div class="modal-icon"></div>
+            <h2>INSTALAR APLICACIÓN</h2>
+            <p>Lleva <strong style="color:#ffffff;">DAZER</strong> a tu pantalla de inicio. Rápido y siempre disponible.</p>
+            <div class="btn-group">
+                <button class="btn-install" id="btnInstall">[↓] A. INSTALAR</button>
+                <button class="btn-quick-link" id="btnQuickLink">[#] B. ENLACE RÁPIDO</button>
+                <button class="btn-continue-web" id="btnContinueWeb">[→] C. SEGUIR EN WEB</button>
+            </div>
+        </div>
+    </div>
 
-    // ==================== INTRO ANIMATION ====================
-    (function drawIntro() {
-      const canvas = document.getElementById('introCanvas');
-      const ctx = canvas.getContext('2d');
-      let alpha = 0, size = 50;
-      function animate() {
-        ctx.clearRect(0,0,300,300);
-        // Drawing D with fire effect (simulated with glowing arcs)
-        ctx.save();
-        ctx.translate(150,150);
-        ctx.fillStyle = '#fff';
-        ctx.font = 'bold 180px Impact';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = '#fff';
-        ctx.shadowBlur = 30 + Math.sin(Date.now()*0.02)*10;
-        ctx.fillText('D', 0, 0);
-        // Fire ring
-        ctx.strokeStyle = '#ccc';
-        ctx.lineWidth = 3 + Math.random()*2;
-        ctx.shadowBlur = 20;
-        for(let i=0; i<8; i++) {
-          let angle = (i/8)*Math.PI*2 + Date.now()*0.005;
-          let rx = Math.cos(angle)*80, ry = Math.sin(angle)*80;
-          ctx.beginPath();
-          ctx.arc(rx, ry, 15+Math.random()*10, 0, Math.PI*2);
-          ctx.stroke();
-        }
-        ctx.restore();
-        requestAnimationFrame(animate);
-      }
-      animate();
-    })();
+    <div class="toast" id="toast"></div>
 
-    // ==================== UI HELPERS ====================
-    function showScreen(id) {
-      document.querySelectorAll('#mainApp .screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      if (id === 'navegarScreen') renderBrowseGrid();
-      if (id === 'reelsScreen') renderReels();
-      if (id === 'chatScreen') renderChatUserList();
-      if (id === 'perfilScreen') renderProfile();
-    }
+    <!-- APP PRINCIPAL -->
+    <div class="app-container" id="appContainer">
+        <header class="app-header">
+            <span class="logo">DAZER</span>
+            <span style="color:#888; font-size:0.8rem;">[ Bienvenido ]</span>
+        </header>
+        <main class="app-content" id="appContent">
+            <div class="placeholder-card">
+                <div class="card-icon icon-video"></div>
+                <span>Netflix-like · Sección de Videos</span>
+                <small>(Próximamente)</small>
+            </div>
+            <div class="placeholder-card">
+                <div class="card-icon icon-reel"></div>
+                <span>TikTok-like · Reels Cortos</span>
+                <small>(Próximamente)</small>
+            </div>
+            <div class="placeholder-card">
+                <div class="card-icon icon-chat"></div>
+                <span>WhatsApp-like · Chat en Vivo</span>
+                <small>(Próximamente)</small>
+            </div>
+            <div class="placeholder-card">
+                <div class="card-icon icon-profile"></div>
+                <span>Perfil de Usuario</span>
+                <small>(Próximamente)</small>
+            </div>
+        </main>
+        <footer class="app-footer">
+            <span>Forjado con energia por <span class="highlight">PAPIROMESA</span> · <span class="highlight">ZALGERT</span> · <span class="highlight">DAZER</span> &copy; 2026</span>
+        </footer>
+    </div>
 
-    // ==================== LOGIN & TILES ====================
-    function renderUserTiles() {
-      let container = document.getElementById('userTilesContainer');
-      container.innerHTML = '';
-      let users = Object.values(DB.users);
-      if (users.length === 0) {
-        container.innerHTML = '<p style="color:var(--muted);">No hay cuentas aun. Pide una.</p>';
-        return;
-      }
-      users.forEach(user => {
-        let tile = document.createElement('div');
-        tile.className = 'user-tile';
-        tile.style.backgroundColor = user.tileColor || '#2a2a2a';
-        tile.innerHTML = `
-          <div class="tile-avatar">
-            ${user.profilePic ? `<img src="${user.profilePic}">` : user.username[0].toUpperCase()}
-          </div>
-          <div class="tile-name">${user.username}</div>
-        `;
-        tile.addEventListener('click', () => openLoginModal(user.username));
-        container.appendChild(tile);
-      });
-    }
+    <script>
+        (function() {
+            // Sistema de partículas monocromáticas
+            class ParticleSystem {
+                constructor(canvasId, count = 120, speed = 1) {
+                    this.canvas = document.getElementById(canvasId);
+                    this.ctx = this.canvas.getContext('2d');
+                    this.count = count;
+                    this.speed = speed;
+                    this.particles = [];
+                    this.animId = null;
+                    this.resize();
+                    window.addEventListener('resize', () => this.resize());
+                }
+                resize() {
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight;
+                }
+                start() {
+                    this.particles = [];
+                    for (let i = 0; i < this.count; i++) {
+                        this.particles.push({
+                            x: Math.random() * this.canvas.width,
+                            y: Math.random() * this.canvas.height,
+                            r: Math.random() * 2 + 1,
+                            alpha: Math.random() * 0.5 + 0.1,
+                            vx: (Math.random() - 0.5) * 1.5 * this.speed,
+                            vy: (Math.random() - 0.5) * 1.5 * this.speed - Math.random() * 2 * this.speed,
+                            life: Math.random(),
+                            decay: Math.random() * 0.008 + 0.003
+                        });
+                    }
+                    this.animate();
+                }
+                animate() {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    for (let p of this.particles) {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.life -= p.decay;
+                        if (p.life <= 0 || p.x < -30 || p.x > this.canvas.width + 30 || p.y < -30 || p.y > this.canvas.height + 30) {
+                            p.x = Math.random() * this.canvas.width;
+                            p.y = this.canvas.height + 20;
+                            p.life = 1;
+                            p.alpha = Math.random() * 0.5 + 0.1;
+                            p.vx = (Math.random() - 0.5) * 1.5 * this.speed;
+                            p.vy = -(Math.random() * 2.5 + 1) * this.speed;
+                        }
+                        const a = p.alpha * Math.max(0, p.life);
+                        this.ctx.beginPath();
+                        this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        this.ctx.fillStyle = `rgba(255,255,255,${a})`;
+                        this.ctx.fill();
+                        this.ctx.beginPath();
+                        this.ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+                        this.ctx.fillStyle = `rgba(255,255,255,${a * 0.2})`;
+                        this.ctx.fill();
+                    }
+                    this.animId = requestAnimationFrame(() => this.animate());
+                }
+                stop() {
+                    if (this.animId) cancelAnimationFrame(this.animId);
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                }
+            }
 
-    let pendingLogin = null;
-    function openLoginModal(username) {
-      pendingLogin = username;
-      document.getElementById('profilePassInput').value = '';
-      document.getElementById('loginModalError').style.display = 'none';
-      document.getElementById('loginModal').classList.add('active');
-    }
-    document.getElementById('confirmLoginBtn').addEventListener('click', () => {
-      let pass = document.getElementById('profilePassInput').value;
-      if (!pendingLogin) return;
-      let user = DB.users[pendingLogin];
-      if (user && user.password === pass) {
-        loginUser(pendingLogin);
-        document.getElementById('loginModal').classList.remove('active');
-      } else {
-        document.getElementById('loginModalError').textContent = 'Contrasena incorrecta';
-        document.getElementById('loginModalError').style.display = 'block';
-        setTimeout(() => document.getElementById('loginModalError').style.display = 'none', 3000);
-      }
-    });
-    document.getElementById('cancelLoginBtn').addEventListener('click', () => {
-      document.getElementById('loginModal').classList.remove('active');
-    });
+            let ps1, ps2, ps3;
 
-    function loginUser(username) {
-      currentUser = username;
-      DB.users[username].online = true;
-      Object.values(DB.users).forEach(u => u.online = false);
-      DB.users[username].online = true;
-      saveDB();
-      document.getElementById('loginScreen').classList.remove('active');
-      document.getElementById('appHeader').style.display = 'flex';
-      document.getElementById('mainApp').style.display = 'flex';
-      document.getElementById('headerUsername').textContent = username;
-      document.getElementById('headerStatusDot').style.background = 'var(--online)';
-      showScreen('navegarScreen');
-    }
+            function flash(d = 150) {
+                return new Promise(r => {
+                    const el = document.getElementById('screenFlash');
+                    el.classList.add('active');
+                    setTimeout(() => { el.classList.remove('active'); setTimeout(r, 80); }, d);
+                });
+            }
 
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      if (currentUser) { DB.users[currentUser].online = false; saveDB(); }
-      currentUser = null;
-      document.getElementById('loginScreen').classList.add('active');
-      document.getElementById('appHeader').style.display = 'none';
-      document.getElementById('mainApp').style.display = 'none';
-      renderUserTiles();
-    });
+            async function hideSplash(el, textEl) {
+                return new Promise(r => {
+                    if (textEl) textEl.classList.add('exiting');
+                    setTimeout(() => {
+                        el.classList.add('hidden');
+                        setTimeout(() => { el.classList.add('fully-removed'); if (textEl) textEl.classList.remove('exiting'); r(); }, 350);
+                    }, 400);
+                });
+            }
 
-    // ==================== ADMIN PANEL ====================
-    document.getElementById('openAdminLink').addEventListener('click', () => {
-      document.getElementById('adminModal').classList.add('active');
-      document.getElementById('adminCodeInput').value = '';
-      document.getElementById('createForm').style.display = 'none';
-    });
-    document.getElementById('closeAdminModal').addEventListener('click', () => {
-      document.getElementById('adminModal').classList.remove('active');
-    });
-    document.getElementById('verifyAdminBtn').addEventListener('click', () => {
-      if (document.getElementById('adminCodeInput').value === MASTER_CODE) {
-        document.getElementById('createForm').style.display = 'flex';
-        populateDateSelectors();
-      } else {
-        document.getElementById('adminError').textContent = 'Codigo incorrecto';
-        document.getElementById('adminError').style.display = 'block';
-        setTimeout(() => document.getElementById('adminError').style.display = 'none', 3000);
-      }
-    });
+            async function showSplash(el, textEl) {
+                return new Promise(r => {
+                    el.classList.remove('fully-removed', 'hidden');
+                    if (textEl) { textEl.classList.remove('exiting'); textEl.style.animation = 'none'; textEl.offsetHeight; textEl.style.animation = ''; }
+                    setTimeout(r, 300);
+                });
+            }
 
-    function populateDateSelectors() {
-      ['daySelect','monthSelect','yearSelect'].forEach(id => {
-        let sel = document.getElementById(id);
-        sel.innerHTML = '';
-        if (id === 'daySelect') for(let i=1;i<=31;i++) sel.innerHTML += `<option value="${i}">${i}</option>`;
-        if (id === 'monthSelect') {
-          ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'].forEach((m,i) => sel.innerHTML += `<option value="${i+1}">${m}</option>`);
-        }
-        if (id === 'yearSelect') {
-          let y = new Date().getFullYear();
-          for(let i=y; i>=y-100; i--) sel.innerHTML += `<option value="${i}">${i}</option>`;
-        }
-      });
-    }
+            async function runSplashSequence() {
+                const s1 = document.getElementById('splash1');
+                const s2 = document.getElementById('splash2');
+                const s3 = document.getElementById('splash3');
+                const t1 = document.getElementById('text1');
+                const t2 = document.getElementById('text2');
+                const t3 = document.getElementById('text3');
 
-    document.getElementById('createUserBtn').addEventListener('click', () => {
-      let username = document.getElementById('newUsername').value.trim();
-      let password = document.getElementById('newPassword').value.trim();
-      let day = document.getElementById('daySelect').value;
-      let month = document.getElementById('monthSelect').value;
-      let year = document.getElementById('yearSelect').value;
-      if (!username || !password) {
-        document.getElementById('createError').textContent = 'Completa los campos';
-        document.getElementById('createError').style.display = 'block';
-        setTimeout(() => document.getElementById('createError').style.display = 'none', 3000);
-        return;
-      }
-      if (DB.users[username]) {
-        document.getElementById('createError').textContent = 'Usuario ya existe';
-        document.getElementById('createError').style.display = 'block';
-        setTimeout(() => document.getElementById('createError').style.display = 'none', 3000);
-        return;
-      }
-      DB.users[username] = {
-        username, password,
-        birth: `${day}/${month}/${year}`,
-        email: `${username}@dazerpost.com`,
-        stickers: [], reels: [],
-        online: false,
-        profilePic: null,
-        tileColor: '#2a2a2a'
-      };
-      saveDB();
-      document.getElementById('newUsername').value = '';
-      document.getElementById('newPassword').value = '';
-      document.getElementById('createForm').style.display = 'none';
-      document.getElementById('adminModal').classList.remove('active');
-      renderUserTiles();
-    });
+                ps1 = new ParticleSystem('canvas1', 150, 1.2);
+                ps1.start();
+                await new Promise(r => setTimeout(r, 1700));
 
-    // ==================== NAVIGATION ====================
-    document.querySelectorAll('.nav-item').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        showScreen(btn.dataset.screen);
-      });
-    });
+                await flash(120);
+                ps1.stop();
+                await hideSplash(s1, t1);
 
-    // ==================== PERFIL ====================
-    function renderProfile() {
-      if (!currentUser) return;
-      let user = DB.users[currentUser];
-      document.getElementById('profileUsername').textContent = user.username;
-      document.getElementById('profileEmail').textContent = user.email;
-      document.getElementById('profileBirth').textContent = user.birth;
-      document.getElementById('tileColorInput').value = user.tileColor || '#2a2a2a';
-      let stickersDiv = document.getElementById('profileStickers');
-      stickersDiv.innerHTML = '';
-      if (user.stickers.length) {
-        user.stickers.forEach(dataUrl => {
-          let card = document.createElement('div');
-          card.className = 'content-card';
-          let img = document.createElement('img');
-          img.src = dataUrl;
-          card.appendChild(img);
-          stickersDiv.appendChild(card);
-        });
-      } else stickersDiv.innerHTML = '<p class="small-text">Sin stickers</p>';
-    }
+                ps2 = new ParticleSystem('canvas2', 140, 1.4);
+                ps2.start();
+                await showSplash(s2, t2);
+                await new Promise(r => setTimeout(r, 1700));
 
-    window.uploadProfilePic = function() {
-      let file = document.getElementById('profilePicInput').files[0];
-      if (!file || !currentUser) return;
-      let reader = new FileReader();
-      reader.onload = e => {
-        DB.users[currentUser].profilePic = e.target.result;
-        saveDB();
-        renderUserTiles();
-      };
-      reader.readAsDataURL(file);
-    };
-    document.getElementById('saveTileColorBtn').addEventListener('click', () => {
-      DB.users[currentUser].tileColor = document.getElementById('tileColorInput').value;
-      saveDB();
-      renderUserTiles();
-    });
-    window.uploadSticker = function() {
-      let file = document.getElementById('stickerUploadInput').files[0];
-      if (!file || !currentUser) return;
-      let reader = new FileReader();
-      reader.onload = e => {
-        DB.users[currentUser].stickers.push(e.target.result);
-        saveDB();
-        renderProfile();
-        renderBrowseGrid();
-      };
-      reader.readAsDataURL(file);
-    };
+                await flash(120);
+                ps2.stop();
+                await hideSplash(s2, t2);
 
-    // ==================== REELS ====================
-    window.uploadReel = function() {
-      let file = document.getElementById('reelUploadInput').files[0];
-      if (!file || !currentUser) return;
-      let reader = new FileReader();
-      reader.onload = e => {
-        DB.globalReels.push({ username: currentUser, videoDataUrl: e.target.result });
-        DB.users[currentUser].reels.push(e.target.result);
-        saveDB();
-        renderReels();
-        renderBrowseGrid();
-      };
-      reader.readAsDataURL(file);
-    };
-    function renderReels() {
-      let container = document.getElementById('reelContainer');
-      container.innerHTML = '';
-      if (!DB.globalReels.length) {
-        container.innerHTML = '<p class="small-text" style="text-align:center; margin-top:40px;">No hay reels</p>';
-        return;
-      }
-      DB.globalReels.forEach(reel => {
-        let item = document.createElement('div');
-        item.className = 'reel-item';
-        let video = document.createElement('video');
-        video.src = reel.videoDataUrl;
-        video.controls = true;
-        video.loop = true;
-        video.setAttribute('playsinline', '');
-        item.appendChild(video);
-        container.appendChild(item);
-      });
-    }
+                ps3 = new ParticleSystem('canvas3', 200, 1.0);
+                ps3.start();
+                await showSplash(s3, t3);
+                await new Promise(r => setTimeout(r, 3500));
 
-    // ==================== NAVEGAR ====================
-    function renderBrowseGrid() {
-      let grid = document.getElementById('contentGrid');
-      grid.innerHTML = '';
-      let all = [];
-      Object.values(DB.users).forEach(u => {
-        if (u.stickers) u.stickers.forEach(d => all.push({ type:'sticker', dataUrl:d }));
-      });
-      DB.globalReels.forEach(r => all.push({ type:'reel', dataUrl:r.videoDataUrl }));
-      if (!all.length) { grid.innerHTML = '<p class="small-text">Sin contenido</p>'; return; }
-      all.forEach(item => {
-        let card = document.createElement('div');
-        card.className = 'content-card';
-        if (item.type === 'sticker') {
-          let img = document.createElement('img');
-          img.src = item.dataUrl;
-          card.appendChild(img);
-        } else {
-          let video = document.createElement('video');
-          video.src = item.dataUrl;
-          video.muted = true;
-          video.autoplay = true;
-          video.loop = true;
-          card.appendChild(video);
-        }
-        grid.appendChild(card);
-      });
-    }
+                await flash(200);
+                ps3.stop();
+                await hideSplash(s3, t3);
 
-    // ==================== CHAT ====================
-    function renderChatUserList() {
-      let list = document.getElementById('chatUserList');
-      let search = document.getElementById('chatSearchUser').value.toLowerCase();
-      list.innerHTML = '';
-      Object.values(DB.users).forEach(u => {
-        if (u.username === currentUser || (search && !u.username.toLowerCase().includes(search))) return;
-        let card = document.createElement('div');
-        card.className = 'user-card';
-        card.innerHTML = `
-          <div class="tile-avatar" style="width:40px;height:40px;border-radius:50%;">
-            ${u.profilePic ? `<img src="${u.profilePic}">` : u.username[0].toUpperCase()}
-          </div>
-          <div style="flex:1;">
-            <strong>${u.username}</strong>
-            <div><span class="status-dot" style="background:${u.online?'var(--online)':'var(--offline)'};"></span>${u.online?'En linea':'No en linea'}</div>
-          </div>
-        `;
-        card.addEventListener('click', () => openChat(u.username));
-        list.appendChild(card);
-      });
-    }
-    document.getElementById('chatSearchUser').addEventListener('input', renderChatUserList);
+                document.body.classList.remove('no-scroll');
+            }
 
-    function openChat(withUser) {
-      document.getElementById('chatWindow').style.display = 'flex';
-      document.getElementById('chatWindow').dataset.with = withUser;
-      renderMessages(withUser);
-    }
-    function getChatKey(a,b) { return [a,b].sort().join('|'); }
-    function renderMessages(withUser) {
-      let key = getChatKey(currentUser, withUser);
-      let msgs = DB.chats[key] || [];
-      let container = document.getElementById('chatMessages');
-      container.innerHTML = '';
-      msgs.forEach(m => {
-        let div = document.createElement('div');
-        div.className = 'msg' + (m.from === currentUser ? ' own' : '');
-        div.textContent = m.text;
-        container.appendChild(div);
-      });
-      container.scrollTop = container.scrollHeight;
-    }
-    document.getElementById('sendMsgBtn').addEventListener('click', () => {
-      let withUser = document.getElementById('chatWindow').dataset.with;
-      let text = document.getElementById('chatInput').value.trim();
-      if (!withUser || !text) return;
-      let key = getChatKey(currentUser, withUser);
-      if (!DB.chats[key]) DB.chats[key] = [];
-      DB.chats[key].push({ from: currentUser, text, time: Date.now() });
-      saveDB();
-      document.getElementById('chatInput').value = '';
-      renderMessages(withUser);
-    });
+            // Instalación PWA
+            let deferredPrompt = null;
+            window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
 
-    // ==================== INIT ====================
-    window.addEventListener('load', () => {
-      loadDB();
-      renderUserTiles();
-      // start with login screen visible after intro (intro fades out)
-      document.getElementById('loginScreen').classList.add('active');
-      document.getElementById('appHeader').style.display = 'none';
-      document.getElementById('mainApp').style.display = 'none';
-      populateDateSelectors();
-    });
+            const modal = document.getElementById('installModalOverlay');
+            const app = document.getElementById('appContainer');
+            const toast = document.getElementById('toast');
 
-    // PWA dummy SW
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('data:application/javascript;base64,' + btoa(
-        'self.addEventListener("fetch",e=>{e.respondWith(fetch(e.request))});self.addEventListener("install",e=>{self.skipWaiting()});'
-      )).catch(()=>{});
-    }
-  </script>
+            function showToast(msg, dur = 2500) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toast._t);
+                toast._t = setTimeout(() => toast.classList.remove('show'), dur);
+            }
+
+            function showInstallModal() { modal.classList.add('active'); }
+            function hideInstallModal() {
+                modal.classList.remove('active');
+                app.classList.add('visible');
+                setTimeout(() => app.style.opacity = '1', 100);
+                localStorage.setItem('dazer_choice', 'web');
+            }
+
+            document.getElementById('btnInstall').addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    await deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    if (outcome === 'accepted') showToast('Listo. Ya estas en modo app.');
+                } else {
+                    showToast('Usa el menu del navegador: "Agregar a pantalla de inicio"');
+                }
+                hideInstallModal();
+            });
+
+            document.getElementById('btnQuickLink').addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(window.location.href);
+                    showToast('Enlace copiado al portapapeles.');
+                } catch { showToast('Copia manual: ' + window.location.href); }
+                hideInstallModal();
+            });
+
+            document.getElementById('btnContinueWeb').addEventListener('click', () => {
+                showToast('Sigues en la web.');
+                hideInstallModal();
+            });
+
+            // Service Worker mínimo
+            if ('serviceWorker' in navigator) {
+                const swBlob = new Blob([`const CACHE='dazer-v2';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`], {type:'application/javascript'});
+                navigator.serviceWorker.register(URL.createObjectURL(swBlob));
+            }
+
+            const manifest = {
+                name: 'DAZER',
+                short_name: 'DAZER',
+                start_url: window.location.href.split('?')[0],
+                display: 'standalone',
+                background_color: '#000000',
+                theme_color: '#000000',
+                icons: [{ src: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192"><rect width="192" height="192" fill="#000"/><text x="96" y="110" text-anchor="middle" font-size="80" font-weight="900" fill="#fff" font-family="sans-serif">D</text></svg>'), sizes: '192x192', type: 'image/svg+xml' }]
+            };
+            const link = document.createElement('link');
+            link.rel = 'manifest';
+            link.href = 'data:application/json;base64,' + btoa(JSON.stringify(manifest));
+            document.head.appendChild(link);
+
+            window.addEventListener('DOMContentLoaded', async () => {
+                await runSplashSequence();
+                const saved = localStorage.getItem('dazer_choice');
+                if (saved === 'web' || saved === 'installed') {
+                    hideInstallModal();
+                } else {
+                    setTimeout(showInstallModal, 600);
+                    setTimeout(() => { if (!modal.classList.contains('active')) hideInstallModal(); }, 18000);
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
