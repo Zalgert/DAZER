@@ -74,6 +74,25 @@
         .app-footer .highlight { color:#888; }
         .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px); background:#1a1a1a; color:#fff; padding:.8rem 2rem; border-radius:30px; border:1px solid #444; z-index:9000; font-weight:600; letter-spacing:.04em; transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275); pointer-events:none; }
         .toast.show { transform:translateX(-50%) translateY(0); }
+
+        .create-account-btn { background:#fff; color:#000; border:none; padding:.6rem 1.5rem; border-radius:20px; font-family:'Orbitron',sans-serif; font-weight:700; font-size:.9rem; letter-spacing:.05em; cursor:pointer; transition:all .3s; }
+        .create-account-btn:hover { background:#ddd; }
+
+        .panel-overlay { position:fixed; inset:0; z-index:7000; background:rgba(0,0,0,.9); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .4s; }
+        .panel-overlay.active { opacity:1; pointer-events:all; }
+        .panel { background:#0a0a0a; border:1px solid #333; border-radius:20px; padding:2rem; width:90%; max-width:400px; display:flex; flex-direction:column; gap:1.2rem; transform:translateY(20px); transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275); }
+        .panel-overlay.active .panel { transform:translateY(0); }
+        .panel h3 { font-family:'Orbitron',sans-serif; font-size:1.2rem; letter-spacing:.1em; text-align:center; color:#fff; }
+        .panel input, .panel select { background:#111; border:1px solid #333; color:#fff; padding:.8rem 1rem; border-radius:10px; font-family:'Rajdhani',sans-serif; font-size:1rem; outline:none; transition:border .3s; }
+        .panel input:focus, .panel select:focus { border-color:#fff; }
+        .panel label { font-family:'Orbitron',sans-serif; font-size:.8rem; color:#888; letter-spacing:.05em; }
+        .panel button { background:#fff; color:#000; border:none; padding:.8rem; border-radius:10px; font-family:'Orbitron',sans-serif; font-weight:700; text-transform:uppercase; cursor:pointer; transition:all .3s; }
+        .panel button:hover { background:#ddd; }
+        .panel button.secondary { background:transparent; border:1px solid #555; color:#aaa; }
+        .panel button.secondary:hover { background:#1a1a1a; color:#fff; }
+        .error-msg { color:#ff4444; font-size:.8rem; text-align:center; display:none; }
+        .error-msg.show { display:block; }
+
         @media (max-width:600px) { .epic-text { font-size:clamp(1.8rem,8vw,3rem) !important; } .splash-dazer .epic-text { font-size:clamp(2.5rem,10vw,4rem) !important; } .install-modal { padding:1.8rem 1.2rem; } .app-content { grid-template-columns:1fr; padding:1rem; } }
         body.no-scroll { overflow:hidden; }
     </style>
@@ -102,6 +121,7 @@
         </div>
     </div>
     <div class="screen-flash" id="screenFlash"></div>
+
     <div class="install-modal-overlay" id="installModalOverlay">
         <div class="install-modal">
             <div class="modal-icon"></div>
@@ -115,10 +135,42 @@
         </div>
     </div>
     <div class="toast" id="toast"></div>
+
+    <div class="panel-overlay" id="masterPasswordPanel">
+        <div class="panel">
+            <h3>CREAR CUENTA</h3>
+            <p style="color:#aaa;font-size:.9rem;text-align:center;">Ingrese la contraseña maestra</p>
+            <input type="password" id="masterPasswordInput" placeholder="Contraseña" autocomplete="off">
+            <span class="error-msg" id="masterPasswordError">Contraseña incorrecta</span>
+            <button id="verifyMasterPasswordBtn">VERIFICAR</button>
+            <button class="secondary" id="cancelMasterPasswordBtn">CANCELAR</button>
+        </div>
+    </div>
+
+    <div class="panel-overlay" id="createAccountPanel">
+        <div class="panel">
+            <h3>NUEVA CUENTA</h3>
+            <label>Nombre de usuario</label>
+            <input type="text" id="newUsername" placeholder="Ej: ZALGERT">
+            <label>Fecha de nacimiento</label>
+            <input type="date" id="newBirthdate">
+            <label>Jerarquía</label>
+            <select id="newHierarchy">
+                <option value="Gratuito">Gratuito</option>
+                <option value="Haiku">Haiku</option>
+                <option value="Admin">Admin</option>
+                <option value="Director">Director</option>
+            </select>
+            <span class="error-msg" id="createAccountError">Complete todos los campos</span>
+            <button id="createAccountBtn">CREAR CUENTA</button>
+            <button class="secondary" id="cancelCreateAccountBtn">CANCELAR</button>
+        </div>
+    </div>
+
     <div class="app-container" id="appContainer">
         <header class="app-header">
             <span class="logo">DAZER</span>
-            <span style="color:#888;font-size:.8rem;">Bienvenido</span>
+            <button class="create-account-btn" id="openMasterPasswordBtn">CREAR CUENTA</button>
         </header>
         <main class="app-content">
             <div class="placeholder-card"><span>Netflix-like · Sección de Videos</span><small>(Próximamente)</small></div>
@@ -130,91 +182,202 @@
             <span>PAPIROMESA · ZALGERT · DAZER &copy; 2026</span>
         </footer>
     </div>
-    <script>
-        (function() {
-            class ParticleSystem {
-                constructor(canvasId, count = 120, speed = 1) {
-                    this.canvas = document.getElementById(canvasId);
-                    this.ctx = this.canvas.getContext('2d');
-                    this.count = count;
-                    this.speed = speed;
-                    this.particles = [];
-                    this.animId = null;
-                    this.resize();
-                    window.addEventListener('resize', () => this.resize());
-                }
-                resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
-                start() {
-                    this.particles = [];
-                    for (let i = 0; i < this.count; i++) this.particles.push({
-                        x: Math.random() * this.canvas.width,
-                        y: Math.random() * this.canvas.height,
-                        r: Math.random() * 2 + 1,
-                        alpha: Math.random() * .5 + .1,
-                        vx: (Math.random() - .5) * 1.5 * this.speed,
-                        vy: (Math.random() - .5) * 1.5 * this.speed - Math.random() * 2 * this.speed,
-                        life: Math.random(),
-                        decay: Math.random() * .008 + .003
-                    });
-                    this.animate();
-                }
-                animate() {
-                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                    for (let p of this.particles) {
-                        p.x += p.vx; p.y += p.vy; p.life -= p.decay;
-                        if (p.life <= 0 || p.x < -30 || p.x > this.canvas.width + 30 || p.y < -30 || p.y > this.canvas.height + 30) {
-                            p.x = Math.random() * this.canvas.width;
-                            p.y = this.canvas.height + 20;
-                            p.life = 1; p.alpha = Math.random() * .5 + .1;
-                            p.vx = (Math.random() - .5) * 1.5 * this.speed;
-                            p.vy = -(Math.random() * 2.5 + 1) * this.speed;
-                        }
-                        const a = p.alpha * Math.max(0, p.life);
-                        this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); this.ctx.fillStyle = `rgba(255,255,255,${a})`; this.ctx.fill();
-                        this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.r*3, 0, Math.PI*2); this.ctx.fillStyle = `rgba(255,255,255,${a*.2})`; this.ctx.fill();
+
+    <!-- Import Map de Firebase (versión modular, más eficiente) -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        // Tus credenciales de Firebase
+        import { initializeApp } from 'firebase/app';
+        import { getFirestore, doc, setDoc, getDoc, runTransaction, serverTimestamp } from 'firebase/firestore';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmJhsqeXRJZEJO7Z45KPnUk9GccrcpXv0",
+            authDomain: "dazer-papiromesayzalgert.firebaseapp.com",
+            projectId: "dazer-papiromesayzalgert",
+            storageBucket: "dazer-papiromesayzalgert.firebasestorage.app",
+            messagingSenderId: "729740258335",
+            appId: "1:729740258335:web:5884cebd099a31cd19b92a",
+            measurementId: "G-9XSW2Z2K3D"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const MAX_ACCOUNTS = 1000;
+        const MASTER_PASSWORD = '29112009';
+
+        // Partículas y splash
+        class ParticleSystem {
+            constructor(canvasId, count = 120, speed = 1) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.count = count;
+                this.speed = speed;
+                this.particles = [];
+                this.animId = null;
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+            }
+            resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
+            start() {
+                this.particles = [];
+                for (let i = 0; i < this.count; i++) this.particles.push({
+                    x: Math.random() * this.canvas.width,
+                    y: Math.random() * this.canvas.height,
+                    r: Math.random() * 2 + 1,
+                    alpha: Math.random() * .5 + .1,
+                    vx: (Math.random() - .5) * 1.5 * this.speed,
+                    vy: (Math.random() - .5) * 1.5 * this.speed - Math.random() * 2 * this.speed,
+                    life: Math.random(),
+                    decay: Math.random() * .008 + .003
+                });
+                this.animate();
+            }
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                for (let p of this.particles) {
+                    p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+                    if (p.life <= 0 || p.x < -30 || p.x > this.canvas.width + 30 || p.y < -30 || p.y > this.canvas.height + 30) {
+                        p.x = Math.random() * this.canvas.width;
+                        p.y = this.canvas.height + 20;
+                        p.life = 1; p.alpha = Math.random() * .5 + .1;
+                        p.vx = (Math.random() - .5) * 1.5 * this.speed;
+                        p.vy = -(Math.random() * 2.5 + 1) * this.speed;
                     }
-                    this.animId = requestAnimationFrame(() => this.animate());
+                    const a = p.alpha * Math.max(0, p.life);
+                    this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); this.ctx.fillStyle = `rgba(255,255,255,${a})`; this.ctx.fill();
+                    this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.r*3, 0, Math.PI*2); this.ctx.fillStyle = `rgba(255,255,255,${a*.2})`; this.ctx.fill();
                 }
-                stop() { if (this.animId) cancelAnimationFrame(this.animId); this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); }
+                this.animId = requestAnimationFrame(() => this.animate());
             }
-            let ps1, ps2, ps3;
-            function flash(d = 150) { return new Promise(r => { const el = document.getElementById('screenFlash'); el.classList.add('active'); setTimeout(() => { el.classList.remove('active'); setTimeout(r, 80); }, d); }); }
-            async function hideSplash(el, textEl) { return new Promise(r => { if (textEl) textEl.classList.add('exiting'); setTimeout(() => { el.classList.add('hidden'); setTimeout(() => { el.classList.add('fully-removed'); if (textEl) textEl.classList.remove('exiting'); r(); }, 350); }, 400); }); }
-            async function showSplash(el, textEl) { return new Promise(r => { el.classList.remove('fully-removed', 'hidden'); if (textEl) { textEl.classList.remove('exiting'); textEl.style.animation = 'none'; textEl.offsetHeight; textEl.style.animation = ''; } setTimeout(r, 300); }); }
-            async function runSplashSequence() {
-                const s1 = document.getElementById('splash1'), s2 = document.getElementById('splash2'), s3 = document.getElementById('splash3');
-                const t1 = document.getElementById('text1'), t2 = document.getElementById('text2'), t3 = document.getElementById('text3');
-                ps1 = new ParticleSystem('canvas1', 150, 1.2); ps1.start(); await new Promise(r => setTimeout(r, 3000));
-                await flash(120); ps1.stop(); await hideSplash(s1, t1);
-                ps2 = new ParticleSystem('canvas2', 140, 1.4); ps2.start(); await showSplash(s2, t2); await new Promise(r => setTimeout(r, 3000));
-                await flash(120); ps2.stop(); await hideSplash(s2, t2);
-                ps3 = new ParticleSystem('canvas3', 200, 1.0); ps3.start(); await showSplash(s3, t3); await new Promise(r => setTimeout(r, 5000));
-                await flash(200); ps3.stop(); await hideSplash(s3, t3);
-                document.body.classList.remove('no-scroll');
+            stop() { if (this.animId) cancelAnimationFrame(this.animId); this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); }
+        }
+
+        let ps1, ps2, ps3;
+        function flash(d = 150) { return new Promise(r => { const el = document.getElementById('screenFlash'); el.classList.add('active'); setTimeout(() => { el.classList.remove('active'); setTimeout(r, 80); }, d); }); }
+        async function hideSplash(el, textEl) { return new Promise(r => { if (textEl) textEl.classList.add('exiting'); setTimeout(() => { el.classList.add('hidden'); setTimeout(() => { el.classList.add('fully-removed'); if (textEl) textEl.classList.remove('exiting'); r(); }, 350); }, 400); }); }
+        async function showSplash(el, textEl) { return new Promise(r => { el.classList.remove('fully-removed', 'hidden'); if (textEl) { textEl.classList.remove('exiting'); textEl.style.animation = 'none'; textEl.offsetHeight; textEl.style.animation = ''; } setTimeout(r, 300); }); }
+        async function runSplashSequence() {
+            const s1 = document.getElementById('splash1'), s2 = document.getElementById('splash2'), s3 = document.getElementById('splash3');
+            const t1 = document.getElementById('text1'), t2 = document.getElementById('text2'), t3 = document.getElementById('text3');
+            ps1 = new ParticleSystem('canvas1', 150, 1.2); ps1.start(); await new Promise(r => setTimeout(r, 3000));
+            await flash(120); ps1.stop(); await hideSplash(s1, t1);
+            ps2 = new ParticleSystem('canvas2', 140, 1.4); ps2.start(); await showSplash(s2, t2); await new Promise(r => setTimeout(r, 3000));
+            await flash(120); ps2.stop(); await hideSplash(s2, t2);
+            ps3 = new ParticleSystem('canvas3', 200, 1.0); ps3.start(); await showSplash(s3, t3); await new Promise(r => setTimeout(r, 5000));
+            await flash(200); ps3.stop(); await hideSplash(s3, t3);
+            document.body.classList.remove('no-scroll');
+        }
+
+        // Instalación PWA
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; });
+        const modal = document.getElementById('installModalOverlay'), appContainer = document.getElementById('appContainer'), toast = document.getElementById('toast');
+        function showToast(msg, dur = 2500) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => toast.classList.remove('show'), dur); }
+        function showInstallModal() { modal.classList.add('active'); }
+        function hideInstallModal() { modal.classList.remove('active'); appContainer.classList.add('visible'); setTimeout(() => appContainer.style.opacity = '1', 100); localStorage.setItem('dazer_choice', 'web'); }
+        document.getElementById('btnInstall').addEventListener('click', async () => {
+            if (deferredPrompt) { await deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; deferredPrompt = null; if (outcome === 'accepted') showToast('Listo. Ya estas en modo app.'); }
+            else showToast('Usa el menu del navegador: "Agregar a pantalla de inicio"');
+            hideInstallModal();
+        });
+        document.getElementById('btnQuickLink').addEventListener('click', async () => { try { await navigator.clipboard.writeText(window.location.href); showToast('Enlace copiado.'); } catch { showToast('Copia manual: ' + window.location.href); } hideInstallModal(); });
+        document.getElementById('btnContinueWeb').addEventListener('click', () => { showToast('Sigues en la web.'); hideInstallModal(); });
+
+        // Service Worker y manifest
+        if ('serviceWorker' in navigator) {
+            const swBlob = new Blob([`const CACHE='dazer-v6';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`], {type:'application/javascript'});
+            navigator.serviceWorker.register(URL.createObjectURL(swBlob));
+        }
+        const manifest = { name:'DAZER', short_name:'DAZER', start_url:window.location.href.split('?')[0], display:'standalone', background_color:'#000', theme_color:'#000', icons:[{src:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192"><rect width="192" height="192" fill="#000"/><text x="96" y="110" text-anchor="middle" font-size="80" font-weight="900" fill="#fff" font-family="sans-serif">D</text></svg>'), sizes:'192x192', type:'image/svg+xml'}] };
+        const link = document.createElement('link'); link.rel = 'manifest'; link.href = 'data:application/json;base64,' + btoa(JSON.stringify(manifest)); document.head.appendChild(link);
+
+        // Sistema de creación de cuentas
+        const masterPanel = document.getElementById('masterPasswordPanel');
+        const createPanel = document.getElementById('createAccountPanel');
+        const masterInput = document.getElementById('masterPasswordInput');
+        const masterError = document.getElementById('masterPasswordError');
+        const createError = document.getElementById('createAccountError');
+
+        document.getElementById('openMasterPasswordBtn').addEventListener('click', () => {
+            masterPanel.classList.add('active');
+            masterInput.value = '';
+            masterError.classList.remove('show');
+        });
+
+        document.getElementById('cancelMasterPasswordBtn').addEventListener('click', () => masterPanel.classList.remove('active'));
+
+        document.getElementById('verifyMasterPasswordBtn').addEventListener('click', () => {
+            if (masterInput.value === MASTER_PASSWORD) {
+                masterPanel.classList.remove('active');
+                createPanel.classList.add('active');
+                document.getElementById('newUsername').value = '';
+                document.getElementById('newBirthdate').value = '';
+                document.getElementById('newHierarchy').value = 'Gratuito';
+                createError.classList.remove('show');
+            } else {
+                masterError.classList.add('show');
             }
-            let deferredPrompt = null;
-            window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; });
-            const modal = document.getElementById('installModalOverlay'), app = document.getElementById('appContainer'), toast = document.getElementById('toast');
-            function showToast(msg, dur = 2500) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => toast.classList.remove('show'), dur); }
-            function showInstallModal() { modal.classList.add('active'); }
-            function hideInstallModal() { modal.classList.remove('active'); app.classList.add('visible'); setTimeout(() => app.style.opacity = '1', 100); localStorage.setItem('dazer_choice', 'web'); }
-            document.getElementById('btnInstall').addEventListener('click', async () => {
-                if (deferredPrompt) { await deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; deferredPrompt = null; if (outcome === 'accepted') showToast('Listo. Ya estas en modo app.'); }
-                else showToast('Usa el menu del navegador: "Agregar a pantalla de inicio"');
-                hideInstallModal();
-            });
-            document.getElementById('btnQuickLink').addEventListener('click', async () => { try { await navigator.clipboard.writeText(window.location.href); showToast('Enlace copiado.'); } catch { showToast('Copia manual: ' + window.location.href); } hideInstallModal(); });
-            document.getElementById('btnContinueWeb').addEventListener('click', () => { showToast('Sigues en la web.'); hideInstallModal(); });
-            if ('serviceWorker' in navigator) { const swBlob = new Blob([`const CACHE='dazer-v5';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`], {type:'application/javascript'}); navigator.serviceWorker.register(URL.createObjectURL(swBlob)); }
-            const manifest = { name:'DAZER', short_name:'DAZER', start_url:window.location.href.split('?')[0], display:'standalone', background_color:'#000', theme_color:'#000', icons:[{src:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192"><rect width="192" height="192" fill="#000"/><text x="96" y="110" text-anchor="middle" font-size="80" font-weight="900" fill="#fff" font-family="sans-serif">D</text></svg>'), sizes:'192x192', type:'image/svg+xml'}] };
-            const link = document.createElement('link'); link.rel = 'manifest'; link.href = 'data:application/json;base64,' + btoa(JSON.stringify(manifest)); document.head.appendChild(link);
-            window.addEventListener('DOMContentLoaded', async () => {
-                await runSplashSequence();
-                const saved = localStorage.getItem('dazer_choice');
-                if (saved === 'web' || saved === 'installed') hideInstallModal();
-                else { setTimeout(showInstallModal, 600); setTimeout(() => { if (!modal.classList.contains('active')) hideInstallModal(); }, 18000); }
-            });
-        })();
+        });
+
+        masterInput.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('verifyMasterPasswordBtn').click(); });
+
+        document.getElementById('cancelCreateAccountBtn').addEventListener('click', () => createPanel.classList.remove('active'));
+
+        document.getElementById('createAccountBtn').addEventListener('click', async () => {
+            const username = document.getElementById('newUsername').value.trim();
+            const birthdate = document.getElementById('newBirthdate').value;
+            const hierarchy = document.getElementById('newHierarchy').value;
+
+            if (!username || !birthdate) { createError.classList.add('show'); return; }
+
+            try {
+                const counterRef = doc(db, 'stats', 'accountCounter');
+                const counterSnap = await getDoc(counterRef);
+                const currentCount = counterSnap.exists() ? (counterSnap.data().count || 0) : 0;
+
+                if (currentCount >= MAX_ACCOUNTS) {
+                    showToast('Límite de 1000 cuentas alcanzado.');
+                    return;
+                }
+
+                const accountRef = doc(db, 'accounts', crypto.randomUUID());
+                await setDoc(accountRef, {
+                    username,
+                    birthdate,
+                    hierarchy,
+                    createdAt: serverTimestamp()
+                });
+
+                await runTransaction(db, async (transaction) => {
+                    const freshSnap = await transaction.get(counterRef);
+                    const newCount = (freshSnap.exists() ? freshSnap.data().count : 0) + 1;
+                    if (newCount > MAX_ACCOUNTS) throw new Error('Límite excedido durante la operación.');
+                    transaction.set(counterRef, { count: newCount }, { merge: true });
+                });
+
+                showToast(`Cuenta "${username}" creada exitosamente.`);
+                createPanel.classList.remove('active');
+            } catch (error) {
+                console.error(error);
+                showToast('Error al crear la cuenta. Intenta de nuevo.');
+            }
+        });
+
+        // Arranque
+        window.addEventListener('DOMContentLoaded', async () => {
+            await runSplashSequence();
+            const saved = localStorage.getItem('dazer_choice');
+            if (saved === 'web' || saved === 'installed') hideInstallModal();
+            else { setTimeout(showInstallModal, 600); setTimeout(() => { if (!modal.classList.contains('active')) hideInstallModal(); }, 18000); }
+        });
     </script>
 </body>
 </html>
