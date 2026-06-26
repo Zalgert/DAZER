@@ -7,440 +7,78 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="DAZER">
-    <meta name="description" content="Plataforma épica - PAPIROMESA | ZALGERT | DAZER">
-    <title>DAZER - Plataforma Épica</title>
-
+    <meta name="description" content="DAZER">
+    <title>DAZER</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-
     <style>
-        :root {
-            --bg: #000000;
-            --text: #ffffff;
-            --gray: #888888;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI','Orbitron','Rajdhani',system-ui,sans-serif; background:#000; color:#fff; overflow-x:hidden; user-select:none; min-height:100vh; min-height:100dvh; }
+        .splash-overlay { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; background:#000; transition:opacity .3s; }
+        .splash-overlay.hidden { opacity:0; pointer-events:none; transition:opacity .6s .2s; }
+        .splash-overlay.fully-removed { display:none; }
+        .splash-canvas { position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+        .splash-content { position:relative; z-index:1; text-align:center; display:flex; flex-direction:column; align-items:center; gap:1rem; }
+        .epic-text { font-family:'Orbitron','Rajdhani',sans-serif; font-weight:900; letter-spacing:.2em; text-transform:uppercase; color:#fff; animation:textEntry .6s cubic-bezier(0.175,0.885,0.32,1.275) forwards; transform:scale(0); opacity:0; }
+        @keyframes textEntry { 0%{transform:scale(0) rotate(-8deg);opacity:0;filter:blur(15px)} 60%{transform:scale(1.08) rotate(2deg);opacity:1;filter:blur(0)} 100%{transform:scale(1) rotate(0);opacity:1;filter:blur(0)} }
+        @keyframes textExit { 0%{transform:scale(1);opacity:1;filter:blur(0)} 100%{transform:scale(1.8) rotate(5deg);opacity:0;filter:blur(25px)} }
+        .epic-text.exiting { animation:textExit .5s ease-in forwards; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        .splash-papiromesa .epic-text { font-size:clamp(2.2rem,6vw,4rem); text-shadow:0 0 10px #fff,0 0 30px rgba(255,255,255,.8),0 0 50px rgba(255,255,255,.5),0 0 80px rgba(255,255,255,.3); animation:textEntry .6s cubic-bezier(0.175,0.885,0.32,1.275) forwards, fireFlicker .08s infinite; animation-delay:0s,.6s; }
+        @keyframes fireFlicker { 0%,100%{text-shadow:0 0 10px #fff,0 0 30px rgba(255,255,255,.8),0 0 50px rgba(255,255,255,.5)} 25%{text-shadow:0 0 14px #fff,0 0 36px rgba(255,255,255,.9),0 0 70px rgba(255,255,255,.6)} 50%{text-shadow:0 0 8px #fff,0 0 26px rgba(255,255,255,.7),0 0 54px rgba(255,255,255,.4)} 75%{text-shadow:0 0 16px #fff,0 0 40px rgba(255,255,255,.9),0 0 74px rgba(255,255,255,.6)} }
+        .splash-papiromesa .subtitle { color:#aaa; font-size:1rem; letter-spacing:.3em; animation:fadeInUp .8s .4s forwards; opacity:0; }
 
-        body {
-            font-family: 'Segoe UI', 'Orbitron', 'Rajdhani', system-ui, -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            min-height: 100vh;
-            min-height: 100dvh;
-        }
+        .splash-zalgert .epic-text { font-size:clamp(2.2rem,6vw,4rem); text-shadow:0 0 8px #fff,0 0 24px rgba(255,255,255,.7),0 0 50px rgba(255,255,255,.4); animation:textEntry .6s cubic-bezier(0.175,0.885,0.32,1.275) forwards, glitchShake .12s steps(2) infinite; animation-delay:0s,.6s; }
+        @keyframes glitchShake { 0%,100%{transform:translate(0,0)} 20%{transform:translate(-3px,2px);text-shadow:3px 0 #555,-3px 0 #999} 40%{transform:translate(3px,-1px);text-shadow:-2px 0 #fff,2px 0 #666} 60%{transform:translate(-1px,-3px);text-shadow:4px 0 #999,-4px 0 #ccc} 80%{transform:translate(2px,3px);text-shadow:-3px 0 #fff,3px 0 #888} }
+        .splash-zalgert .subtitle { color:#888; font-size:1rem; letter-spacing:.3em; animation:fadeInUp .8s .4s forwards; opacity:0; }
 
-        .splash-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            pointer-events: all;
-            background: #000000;
-            transition: opacity 0.3s ease;
-        }
-        .splash-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.6s ease 0.2s;
-        }
-        .splash-overlay.fully-removed {
-            display: none;
-        }
+        .splash-dazer .epic-text { font-size:clamp(3.2rem,8vw,6rem); text-shadow:0 0 8px #fff,0 0 20px rgba(255,255,255,.8),0 0 40px rgba(255,255,255,.5),0 0 80px rgba(255,255,255,.3),0 0 120px rgba(255,255,255,.2); animation:textEntry .8s cubic-bezier(0.175,0.885,0.32,1.275) forwards, majesticPulse 2s infinite; animation-delay:0s,.8s; }
+        @keyframes majesticPulse { 0%,100%{transform:scale(1);text-shadow:0 0 8px #fff,0 0 20px rgba(255,255,255,.8),0 0 40px rgba(255,255,255,.5)} 50%{transform:scale(1.05);text-shadow:0 0 18px #fff,0 0 40px rgba(255,255,255,.9),0 0 70px rgba(255,255,255,.6),0 0 100px rgba(255,255,255,.3)} }
+        .splash-dazer .subtitle { color:#aaa; font-size:1.1rem; letter-spacing:.4em; animation:fadeInUp 1s .5s forwards; opacity:0; }
 
-        .splash-canvas {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
+        .dazer-symbol { width:55px; height:55px; border:3px solid #fff; border-radius:50%; position:relative; animation:crownBounce 1.5s infinite; box-shadow:0 0 20px rgba(255,255,255,.5); margin-bottom:.3rem; }
+        .dazer-symbol::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:0; height:0; border-left:18px solid transparent; border-right:18px solid transparent; border-bottom:30px solid #fff; filter:drop-shadow(0 0 8px rgba(255,255,255,.8)); }
+        @keyframes crownBounce { 0%,100%{transform:translateY(0) scale(1)} 30%{transform:translateY(-20px) scale(1.1)} 50%{transform:translateY(0) scale(.95)} 70%{transform:translateY(-8px) scale(1.05)} }
 
-        .splash-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:.9;transform:translateY(0)} }
 
-        .epic-text {
-            font-family: 'Orbitron', 'Rajdhani', 'Impact', sans-serif;
-            font-weight: 900;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: #ffffff;
-            animation: textEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            transform: scale(0);
-            opacity: 0;
-        }
+        .screen-flash { position:fixed; inset:0; z-index:10000; background:#fff; pointer-events:none; opacity:0; transition:opacity .08s; }
+        .screen-flash.active { opacity:.95; transition:opacity .05s; }
 
-        @keyframes textEntry {
-            0% { transform: scale(0) rotate(-8deg); opacity: 0; filter: blur(15px); }
-            60% { transform: scale(1.08) rotate(2deg); opacity: 1; filter: blur(0); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0); }
-        }
+        .install-modal-overlay { position:fixed; inset:0; z-index:8000; background:rgba(0,0,0,.95); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .5s; }
+        .install-modal-overlay.active { opacity:1; pointer-events:all; }
+        .install-modal { background:#0a0a0a; border:1px solid #333; border-radius:20px; padding:2.5rem 2rem; max-width:440px; width:90%; text-align:center; box-shadow:0 0 40px rgba(255,255,255,.1); transform:translateY(30px); transition:transform .5s cubic-bezier(0.175,0.885,0.32,1.275); }
+        .install-modal-overlay.active .install-modal { transform:translateY(0); }
+        .install-modal h2 { font-family:'Orbitron',sans-serif; font-size:1.6rem; color:#fff; margin-bottom:.8rem; letter-spacing:.1em; }
+        .install-modal .modal-icon { display:inline-block; width:50px; height:50px; border:2px solid #fff; border-radius:50%; position:relative; margin-bottom:1rem; animation:pulse-icon 2s infinite; }
+        .modal-icon::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(45deg); width:16px; height:16px; background:#fff; box-shadow:0 0 10px #fff; }
+        @keyframes pulse-icon { 0%,100%{box-shadow:0 0 10px rgba(255,255,255,.5)} 50%{box-shadow:0 0 25px rgba(255,255,255,.9)} }
+        .install-modal p { color:#aaa; margin-bottom:1.8rem; font-size:.95rem; line-height:1.5; }
+        .install-modal .btn-group { display:flex; flex-direction:column; gap:.8rem; }
+        .install-modal button { font-family:'Orbitron','Rajdhani',sans-serif; font-weight:700; font-size:1rem; letter-spacing:.08em; padding:1rem 1.5rem; border-radius:12px; border:none; cursor:pointer; transition:all .3s; text-transform:uppercase; background:#111; color:#fff; border:1px solid #333; }
+        .btn-install { background:#fff !important; color:#000 !important; font-weight:900 !important; border:none !important; box-shadow:0 0 20px rgba(255,255,255,.3); animation:btn-glow 2s infinite; }
+        @keyframes btn-glow { 0%,100%{box-shadow:0 0 20px rgba(255,255,255,.3)} 50%{box-shadow:0 0 35px rgba(255,255,255,.6)} }
+        .btn-install:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(255,255,255,.5); }
+        .btn-quick-link { border-color:#555; } .btn-quick-link:hover { background:#1a1a1a; border-color:#888; }
+        .btn-continue-web { border-color:#333; color:#777; font-size:.85rem !important; } .btn-continue-web:hover { background:#1a1a1a; color:#aaa; }
 
-        @keyframes textExit {
-            0% { transform: scale(1); opacity: 1; filter: blur(0); }
-            100% { transform: scale(1.8) rotate(5deg); opacity: 0; filter: blur(25px); }
-        }
-        .epic-text.exiting {
-            animation: textExit 0.5s ease-in forwards;
-        }
-
-        /* PAPIROMESA (3 segundos) */
-        .splash-papiromesa .epic-text {
-            font-size: clamp(2.2rem, 6vw, 4rem);
-            text-shadow: 0 0 10px #ffffff, 0 0 30px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.5), 0 0 80px rgba(255,255,255,0.3);
-            animation: textEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, fireFlicker 0.08s ease-in-out infinite;
-            animation-delay: 0s, 0.6s;
-        }
-        @keyframes fireFlicker {
-            0%,100% { text-shadow: 0 0 10px #fff, 0 0 30px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.5); }
-            25% { text-shadow: 0 0 14px #fff, 0 0 36px rgba(255,255,255,0.9), 0 0 70px rgba(255,255,255,0.6); }
-            50% { text-shadow: 0 0 8px #fff, 0 0 26px rgba(255,255,255,0.7), 0 0 54px rgba(255,255,255,0.4); }
-            75% { text-shadow: 0 0 16px #fff, 0 0 40px rgba(255,255,255,0.9), 0 0 74px rgba(255,255,255,0.6); }
-        }
-        .splash-papiromesa .subtitle {
-            color: #aaaaaa;
-            font-size: 1rem;
-            letter-spacing: 0.3em;
-            animation: fadeInUp 0.8s ease 0.4s forwards;
-            opacity: 0;
-        }
-
-        /* ZALGERT (3 segundos) */
-        .splash-zalgert .epic-text {
-            font-size: clamp(2.2rem, 6vw, 4rem);
-            text-shadow: 0 0 8px #ffffff, 0 0 24px rgba(255,255,255,0.7), 0 0 50px rgba(255,255,255,0.4);
-            animation: textEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, glitchShake 0.12s steps(2) infinite;
-            animation-delay: 0s, 0.6s;
-        }
-        @keyframes glitchShake {
-            0%,100% { transform: translate(0,0); }
-            20% { transform: translate(-3px,2px); text-shadow: 3px 0 #555, -3px 0 #999; }
-            40% { transform: translate(3px,-1px); text-shadow: -2px 0 #fff, 2px 0 #666; }
-            60% { transform: translate(-1px,-3px); text-shadow: 4px 0 #999, -4px 0 #ccc; }
-            80% { transform: translate(2px,3px); text-shadow: -3px 0 #fff, 3px 0 #888; }
-        }
-        .splash-zalgert .subtitle {
-            color: #888888;
-            font-size: 1rem;
-            letter-spacing: 0.3em;
-            animation: fadeInUp 0.8s ease 0.4s forwards;
-            opacity: 0;
-        }
-
-        /* DAZER (5 segundos) */
-        .splash-dazer .epic-text {
-            font-size: clamp(3.2rem, 8vw, 6rem);
-            text-shadow: 0 0 8px #ffffff, 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.5), 0 0 80px rgba(255,255,255,0.3), 0 0 120px rgba(255,255,255,0.2);
-            animation: textEntry 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, majesticPulse 2s ease-in-out infinite;
-            animation-delay: 0s, 0.8s;
-        }
-        @keyframes majesticPulse {
-            0%,100% { transform: scale(1); text-shadow: 0 0 8px #fff, 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.5); }
-            50% { transform: scale(1.05); text-shadow: 0 0 18px #fff, 0 0 40px rgba(255,255,255,0.9), 0 0 70px rgba(255,255,255,0.6), 0 0 100px rgba(255,255,255,0.3); }
-        }
-        .splash-dazer .subtitle {
-            color: #aaaaaa;
-            font-size: 1.1rem;
-            letter-spacing: 0.4em;
-            animation: fadeInUp 1s ease 0.5s forwards;
-            opacity: 0;
-        }
-
-        .dazer-symbol {
-            width: 55px;
-            height: 55px;
-            border: 3px solid #ffffff;
-            border-radius: 50%;
-            position: relative;
-            animation: crownBounce 1.5s ease-in-out infinite;
-            box-shadow: 0 0 20px rgba(255,255,255,0.5);
-            margin-bottom: 0.3rem;
-        }
-        .dazer-symbol::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 0;
-            height: 0;
-            border-left: 18px solid transparent;
-            border-right: 18px solid transparent;
-            border-bottom: 30px solid #ffffff;
-            filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
-        }
-        @keyframes crownBounce {
-            0%,100% { transform: translateY(0) scale(1); }
-            30% { transform: translateY(-20px) scale(1.1); }
-            50% { transform: translateY(0) scale(0.95); }
-            70% { transform: translateY(-8px) scale(1.05); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 0.9; transform: translateY(0); }
-        }
-
-        .screen-flash {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            background: #ffffff;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.08s ease;
-        }
-        .screen-flash.active {
-            opacity: 0.95;
-            transition: opacity 0.05s ease;
-        }
-
-        /* Modal instalación */
-        .install-modal-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 8000;
-            background: rgba(0,0,0,0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-        }
-        .install-modal-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        .install-modal {
-            background: #0a0a0a;
-            border: 1px solid #333;
-            border-radius: 20px;
-            padding: 2.5rem 2rem;
-            max-width: 440px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(255,255,255,0.1);
-            transform: translateY(30px);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .install-modal-overlay.active .install-modal {
-            transform: translateY(0);
-        }
-        .install-modal h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.6rem;
-            color: #ffffff;
-            margin-bottom: 0.8rem;
-            letter-spacing: 0.1em;
-        }
-        .install-modal .modal-icon {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 2px solid #ffffff;
-            border-radius: 50%;
-            position: relative;
-            margin-bottom: 1rem;
-            animation: pulse-icon 2s ease-in-out infinite;
-        }
-        .modal-icon::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-            width: 16px;
-            height: 16px;
-            background: #ffffff;
-            box-shadow: 0 0 10px #ffffff;
-        }
-        @keyframes pulse-icon {
-            0%,100% { box-shadow: 0 0 10px rgba(255,255,255,0.5); }
-            50% { box-shadow: 0 0 25px rgba(255,255,255,0.9); }
-        }
-        .install-modal p {
-            color: #aaa;
-            margin-bottom: 1.8rem;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        .install-modal .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-        .install-modal button {
-            font-family: 'Orbitron', 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 0.08em;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            background: #111;
-            color: #ffffff;
-            border: 1px solid #333;
-        }
-        .btn-install {
-            background: #ffffff !important;
-            color: #000000 !important;
-            font-weight: 900 !important;
-            border: none !important;
-            box-shadow: 0 0 20px rgba(255,255,255,0.3);
-            animation: btn-glow 2s ease-in-out infinite;
-        }
-        @keyframes btn-glow {
-            0%,100% { box-shadow: 0 0 20px rgba(255,255,255,0.3); }
-            50% { box-shadow: 0 0 35px rgba(255,255,255,0.6); }
-        }
-        .btn-install:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(255,255,255,0.5); }
-        .btn-quick-link { border-color: #555; }
-        .btn-quick-link:hover { background: #1a1a1a; border-color: #888; }
-        .btn-continue-web { border-color: #333; color: #777; font-size: 0.85rem !important; }
-        .btn-continue-web:hover { background: #1a1a1a; color: #aaa; }
-
-        /* App principal */
-        .app-container {
-            display: none;
-            min-height: 100vh;
-            min-height: 100dvh;
-            flex-direction: column;
-            background: #000000;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-        .app-container.visible {
-            display: flex;
-            opacity: 1;
-        }
-
-        .app-header {
-            padding: 1.2rem 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #222;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(10px);
-        }
-        .app-header .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 900;
-            letter-spacing: 0.12em;
-            color: #ffffff;
-        }
-
-        .app-content {
-            flex: 1;
-            padding: 1.5rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .placeholder-card {
-            background: #0a0a0a;
-            border: 1px solid #222;
-            border-radius: 16px;
-            padding: 2.5rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            color: #555;
-            transition: all 0.3s ease;
-        }
-        .placeholder-card:hover {
-            border-color: #555;
-            color: #aaa;
-        }
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #444;
-            border-radius: 50%;
-            position: relative;
-        }
-        .icon-video::after { content: ''; position: absolute; top: 50%; left: 55%; transform: translate(-50%,-50%); width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 14px solid #666; }
-        .icon-reel::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 12px; height: 16px; border: 2px solid #666; border-radius: 3px; }
-        .icon-chat::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 16px; height: 12px; border: 2px solid #666; border-radius: 4px; }
-        .icon-profile::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 10px; height: 10px; border: 2px solid #666; border-radius: 50%; box-shadow: 0 -8px 0 #666; }
-
-        .app-footer {
-            text-align: center;
-            padding: 1.5rem;
-            color: #444;
-            font-size: 0.8rem;
-            border-top: 1px solid #1a1a1a;
-            letter-spacing: 0.05em;
-        }
-        .app-footer .highlight {
-            color: #888;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #1a1a1a;
-            color: #ffffff;
-            padding: 0.8rem 2rem;
-            border-radius: 30px;
-            border: 1px solid #444;
-            z-index: 9000;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-        }
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        @media (max-width: 600px) {
-            .epic-text { font-size: clamp(1.8rem, 8vw, 3rem) !important; }
-            .splash-dazer .epic-text { font-size: clamp(2.5rem, 10vw, 4rem) !important; }
-            .install-modal { padding: 1.8rem 1.2rem; }
-            .app-content { grid-template-columns: 1fr; padding: 1rem; }
-        }
-
-        body.no-scroll { overflow: hidden; }
+        .app-container { display:none; min-height:100vh; min-height:100dvh; flex-direction:column; background:#000; opacity:0; transition:opacity .6s; }
+        .app-container.visible { display:flex; opacity:1; }
+        .app-header { padding:1.2rem 1.5rem; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #222; position:sticky; top:0; z-index:100; background:rgba(0,0,0,.95); backdrop-filter:blur(10px); }
+        .app-header .logo { font-family:'Orbitron',sans-serif; font-size:1.4rem; font-weight:900; letter-spacing:.12em; color:#fff; }
+        .app-content { flex:1; padding:1.5rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.5rem; max-width:1200px; margin:0 auto; width:100%; }
+        .placeholder-card { background:#0a0a0a; border:1px solid #222; border-radius:16px; padding:2.5rem 1.5rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; color:#555; transition:all .3s; }
+        .placeholder-card:hover { border-color:#555; color:#aaa; }
+        .app-footer { text-align:center; padding:1.5rem; color:#444; font-size:.8rem; border-top:1px solid #1a1a1a; letter-spacing:.05em; }
+        .app-footer .highlight { color:#888; }
+        .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px); background:#1a1a1a; color:#fff; padding:.8rem 2rem; border-radius:30px; border:1px solid #444; z-index:9000; font-weight:600; letter-spacing:.04em; transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275); pointer-events:none; }
+        .toast.show { transform:translateX(-50%) translateY(0); }
+        @media (max-width:600px) { .epic-text { font-size:clamp(1.8rem,8vw,3rem) !important; } .splash-dazer .epic-text { font-size:clamp(2.5rem,10vw,4rem) !important; } .install-modal { padding:1.8rem 1.2rem; } .app-content { grid-template-columns:1fr; padding:1rem; } }
+        body.no-scroll { overflow:hidden; }
     </style>
 </head>
 <body class="no-scroll">
-
-    <!-- PAPIROMESA (3s) -->
     <div class="splash-overlay splash-papiromesa" id="splash1">
         <canvas class="splash-canvas" id="canvas1"></canvas>
         <div class="splash-content">
@@ -448,8 +86,6 @@
             <span class="subtitle">repositorio de estudio</span>
         </div>
     </div>
-
-    <!-- ZALGERT (3s) -->
     <div class="splash-overlay splash-zalgert hidden fully-removed" id="splash2">
         <canvas class="splash-canvas" id="canvas2"></canvas>
         <div class="splash-content">
@@ -457,8 +93,6 @@
             <span class="subtitle">Nos presentara a</span>
         </div>
     </div>
-
-    <!-- DAZER (5s) -->
     <div class="splash-overlay splash-dazer hidden fully-removed" id="splash3">
         <canvas class="splash-canvas" id="canvas3"></canvas>
         <div class="splash-content">
@@ -467,58 +101,35 @@
             <span class="subtitle">version estandar</span>
         </div>
     </div>
-
     <div class="screen-flash" id="screenFlash"></div>
-
-    <!-- Modal instalación -->
     <div class="install-modal-overlay" id="installModalOverlay">
         <div class="install-modal">
             <div class="modal-icon"></div>
             <h2>INSTALAR APLICACIÓN</h2>
-            <p>Lleva <strong style="color:#ffffff;">DAZER</strong> a tu pantalla de inicio.</p>
+            <p>Lleva <strong style="color:#fff;">DAZER</strong> a tu pantalla de inicio.</p>
             <div class="btn-group">
-                <button class="btn-install" id="btnInstall">[↓] A. INSTALAR</button>
-                <button class="btn-quick-link" id="btnQuickLink">[#] B. ENLACE RÁPIDO</button>
-                <button class="btn-continue-web" id="btnContinueWeb">[→] C. SEGUIR EN WEB</button>
+                <button class="btn-install" id="btnInstall">INSTALAR</button>
+                <button class="btn-quick-link" id="btnQuickLink">ENLACE RÁPIDO</button>
+                <button class="btn-continue-web" id="btnContinueWeb">SEGUIR EN WEB</button>
             </div>
         </div>
     </div>
-
     <div class="toast" id="toast"></div>
-
-    <!-- App principal -->
     <div class="app-container" id="appContainer">
         <header class="app-header">
             <span class="logo">DAZER</span>
-            <span style="color:#888; font-size:0.8rem;">[ Bienvenido ]</span>
+            <span style="color:#888;font-size:.8rem;">Bienvenido</span>
         </header>
-        <main class="app-content" id="appContent">
-            <div class="placeholder-card">
-                <div class="card-icon icon-video"></div>
-                <span>Netflix-like · Sección de Videos</span>
-                <small>(Próximamente)</small>
-            </div>
-            <div class="placeholder-card">
-                <div class="card-icon icon-reel"></div>
-                <span>TikTok-like · Reels Cortos</span>
-                <small>(Próximamente)</small>
-            </div>
-            <div class="placeholder-card">
-                <div class="card-icon icon-chat"></div>
-                <span>WhatsApp-like · Chat en Vivo</span>
-                <small>(Próximamente)</small>
-            </div>
-            <div class="placeholder-card">
-                <div class="card-icon icon-profile"></div>
-                <span>Perfil de Usuario</span>
-                <small>(Próximamente)</small>
-            </div>
+        <main class="app-content">
+            <div class="placeholder-card"><span>Netflix-like · Sección de Videos</span><small>(Próximamente)</small></div>
+            <div class="placeholder-card"><span>TikTok-like · Reels Cortos</span><small>(Próximamente)</small></div>
+            <div class="placeholder-card"><span>WhatsApp-like · Chat en Vivo</span><small>(Próximamente)</small></div>
+            <div class="placeholder-card"><span>Perfil de Usuario</span><small>(Próximamente)</small></div>
         </main>
         <footer class="app-footer">
-            <span>Forjado con energia por <span class="highlight">PAPIROMESA</span> · <span class="highlight">ZALGERT</span> · <span class="highlight">DAZER</span> &copy; 2026</span>
+            <span>PAPIROMESA · ZALGERT · DAZER &copy; 2026</span>
         </footer>
     </div>
-
     <script>
         (function() {
             class ParticleSystem {
@@ -532,201 +143,76 @@
                     this.resize();
                     window.addEventListener('resize', () => this.resize());
                 }
-                resize() {
-                    this.canvas.width = window.innerWidth;
-                    this.canvas.height = window.innerHeight;
-                }
+                resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
                 start() {
                     this.particles = [];
-                    for (let i = 0; i < this.count; i++) {
-                        this.particles.push({
-                            x: Math.random() * this.canvas.width,
-                            y: Math.random() * this.canvas.height,
-                            r: Math.random() * 2 + 1,
-                            alpha: Math.random() * 0.5 + 0.1,
-                            vx: (Math.random() - 0.5) * 1.5 * this.speed,
-                            vy: (Math.random() - 0.5) * 1.5 * this.speed - Math.random() * 2 * this.speed,
-                            life: Math.random(),
-                            decay: Math.random() * 0.008 + 0.003
-                        });
-                    }
+                    for (let i = 0; i < this.count; i++) this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        r: Math.random() * 2 + 1,
+                        alpha: Math.random() * .5 + .1,
+                        vx: (Math.random() - .5) * 1.5 * this.speed,
+                        vy: (Math.random() - .5) * 1.5 * this.speed - Math.random() * 2 * this.speed,
+                        life: Math.random(),
+                        decay: Math.random() * .008 + .003
+                    });
                     this.animate();
                 }
                 animate() {
                     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                     for (let p of this.particles) {
-                        p.x += p.vx;
-                        p.y += p.vy;
-                        p.life -= p.decay;
+                        p.x += p.vx; p.y += p.vy; p.life -= p.decay;
                         if (p.life <= 0 || p.x < -30 || p.x > this.canvas.width + 30 || p.y < -30 || p.y > this.canvas.height + 30) {
                             p.x = Math.random() * this.canvas.width;
                             p.y = this.canvas.height + 20;
-                            p.life = 1;
-                            p.alpha = Math.random() * 0.5 + 0.1;
-                            p.vx = (Math.random() - 0.5) * 1.5 * this.speed;
+                            p.life = 1; p.alpha = Math.random() * .5 + .1;
+                            p.vx = (Math.random() - .5) * 1.5 * this.speed;
                             p.vy = -(Math.random() * 2.5 + 1) * this.speed;
                         }
                         const a = p.alpha * Math.max(0, p.life);
-                        this.ctx.beginPath();
-                        this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                        this.ctx.fillStyle = `rgba(255,255,255,${a})`;
-                        this.ctx.fill();
-                        this.ctx.beginPath();
-                        this.ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
-                        this.ctx.fillStyle = `rgba(255,255,255,${a * 0.2})`;
-                        this.ctx.fill();
+                        this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); this.ctx.fillStyle = `rgba(255,255,255,${a})`; this.ctx.fill();
+                        this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.r*3, 0, Math.PI*2); this.ctx.fillStyle = `rgba(255,255,255,${a*.2})`; this.ctx.fill();
                     }
                     this.animId = requestAnimationFrame(() => this.animate());
                 }
-                stop() {
-                    if (this.animId) cancelAnimationFrame(this.animId);
-                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                }
+                stop() { if (this.animId) cancelAnimationFrame(this.animId); this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); }
             }
-
             let ps1, ps2, ps3;
-
-            function flash(d = 150) {
-                return new Promise(r => {
-                    const el = document.getElementById('screenFlash');
-                    el.classList.add('active');
-                    setTimeout(() => { el.classList.remove('active'); setTimeout(r, 80); }, d);
-                });
-            }
-
-            async function hideSplash(el, textEl) {
-                return new Promise(r => {
-                    if (textEl) textEl.classList.add('exiting');
-                    setTimeout(() => {
-                        el.classList.add('hidden');
-                        setTimeout(() => { el.classList.add('fully-removed'); if (textEl) textEl.classList.remove('exiting'); r(); }, 350);
-                    }, 400);
-                });
-            }
-
-            async function showSplash(el, textEl) {
-                return new Promise(r => {
-                    el.classList.remove('fully-removed', 'hidden');
-                    if (textEl) { textEl.classList.remove('exiting'); textEl.style.animation = 'none'; textEl.offsetHeight; textEl.style.animation = ''; }
-                    setTimeout(r, 300);
-                });
-            }
-
+            function flash(d = 150) { return new Promise(r => { const el = document.getElementById('screenFlash'); el.classList.add('active'); setTimeout(() => { el.classList.remove('active'); setTimeout(r, 80); }, d); }); }
+            async function hideSplash(el, textEl) { return new Promise(r => { if (textEl) textEl.classList.add('exiting'); setTimeout(() => { el.classList.add('hidden'); setTimeout(() => { el.classList.add('fully-removed'); if (textEl) textEl.classList.remove('exiting'); r(); }, 350); }, 400); }); }
+            async function showSplash(el, textEl) { return new Promise(r => { el.classList.remove('fully-removed', 'hidden'); if (textEl) { textEl.classList.remove('exiting'); textEl.style.animation = 'none'; textEl.offsetHeight; textEl.style.animation = ''; } setTimeout(r, 300); }); }
             async function runSplashSequence() {
-                const s1 = document.getElementById('splash1');
-                const s2 = document.getElementById('splash2');
-                const s3 = document.getElementById('splash3');
-                const t1 = document.getElementById('text1');
-                const t2 = document.getElementById('text2');
-                const t3 = document.getElementById('text3');
-
-                // PAPIROMESA 3s
-                ps1 = new ParticleSystem('canvas1', 150, 1.2);
-                ps1.start();
-                await new Promise(r => setTimeout(r, 3000));
-
-                await flash(120);
-                ps1.stop();
-                await hideSplash(s1, t1);
-
-                // ZALGERT 3s
-                ps2 = new ParticleSystem('canvas2', 140, 1.4);
-                ps2.start();
-                await showSplash(s2, t2);
-                await new Promise(r => setTimeout(r, 3000));
-
-                await flash(120);
-                ps2.stop();
-                await hideSplash(s2, t2);
-
-                // DAZER 5s
-                ps3 = new ParticleSystem('canvas3', 200, 1.0);
-                ps3.start();
-                await showSplash(s3, t3);
-                await new Promise(r => setTimeout(r, 5000));
-
-                await flash(200);
-                ps3.stop();
-                await hideSplash(s3, t3);
-
+                const s1 = document.getElementById('splash1'), s2 = document.getElementById('splash2'), s3 = document.getElementById('splash3');
+                const t1 = document.getElementById('text1'), t2 = document.getElementById('text2'), t3 = document.getElementById('text3');
+                ps1 = new ParticleSystem('canvas1', 150, 1.2); ps1.start(); await new Promise(r => setTimeout(r, 3000));
+                await flash(120); ps1.stop(); await hideSplash(s1, t1);
+                ps2 = new ParticleSystem('canvas2', 140, 1.4); ps2.start(); await showSplash(s2, t2); await new Promise(r => setTimeout(r, 3000));
+                await flash(120); ps2.stop(); await hideSplash(s2, t2);
+                ps3 = new ParticleSystem('canvas3', 200, 1.0); ps3.start(); await showSplash(s3, t3); await new Promise(r => setTimeout(r, 5000));
+                await flash(200); ps3.stop(); await hideSplash(s3, t3);
                 document.body.classList.remove('no-scroll');
             }
-
             let deferredPrompt = null;
-            window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-
-            const modal = document.getElementById('installModalOverlay');
-            const app = document.getElementById('appContainer');
-            const toast = document.getElementById('toast');
-
-            function showToast(msg, dur = 2500) {
-                toast.textContent = msg;
-                toast.classList.add('show');
-                clearTimeout(toast._t);
-                toast._t = setTimeout(() => toast.classList.remove('show'), dur);
-            }
-
+            window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; });
+            const modal = document.getElementById('installModalOverlay'), app = document.getElementById('appContainer'), toast = document.getElementById('toast');
+            function showToast(msg, dur = 2500) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => toast.classList.remove('show'), dur); }
             function showInstallModal() { modal.classList.add('active'); }
-            function hideInstallModal() {
-                modal.classList.remove('active');
-                app.classList.add('visible');
-                setTimeout(() => app.style.opacity = '1', 100);
-                localStorage.setItem('dazer_choice', 'web');
-            }
-
+            function hideInstallModal() { modal.classList.remove('active'); app.classList.add('visible'); setTimeout(() => app.style.opacity = '1', 100); localStorage.setItem('dazer_choice', 'web'); }
             document.getElementById('btnInstall').addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    await deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    deferredPrompt = null;
-                    if (outcome === 'accepted') showToast('Listo. Ya estas en modo app.');
-                } else {
-                    showToast('Usa el menu del navegador: "Agregar a pantalla de inicio"');
-                }
+                if (deferredPrompt) { await deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; deferredPrompt = null; if (outcome === 'accepted') showToast('Listo. Ya estas en modo app.'); }
+                else showToast('Usa el menu del navegador: "Agregar a pantalla de inicio"');
                 hideInstallModal();
             });
-
-            document.getElementById('btnQuickLink').addEventListener('click', async () => {
-                try {
-                    await navigator.clipboard.writeText(window.location.href);
-                    showToast('Enlace copiado al portapapeles.');
-                } catch { showToast('Copia manual: ' + window.location.href); }
-                hideInstallModal();
-            });
-
-            document.getElementById('btnContinueWeb').addEventListener('click', () => {
-                showToast('Sigues en la web.');
-                hideInstallModal();
-            });
-
-            if ('serviceWorker' in navigator) {
-                const swBlob = new Blob([`const CACHE='dazer-v4';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`], {type:'application/javascript'});
-                navigator.serviceWorker.register(URL.createObjectURL(swBlob));
-            }
-
-            const manifest = {
-                name: 'DAZER',
-                short_name: 'DAZER',
-                start_url: window.location.href.split('?')[0],
-                display: 'standalone',
-                background_color: '#000000',
-                theme_color: '#000000',
-                icons: [{ src: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192"><rect width="192" height="192" fill="#000"/><text x="96" y="110" text-anchor="middle" font-size="80" font-weight="900" fill="#fff" font-family="sans-serif">D</text></svg>'), sizes: '192x192', type: 'image/svg+xml' }]
-            };
-            const link = document.createElement('link');
-            link.rel = 'manifest';
-            link.href = 'data:application/json;base64,' + btoa(JSON.stringify(manifest));
-            document.head.appendChild(link);
-
+            document.getElementById('btnQuickLink').addEventListener('click', async () => { try { await navigator.clipboard.writeText(window.location.href); showToast('Enlace copiado.'); } catch { showToast('Copia manual: ' + window.location.href); } hideInstallModal(); });
+            document.getElementById('btnContinueWeb').addEventListener('click', () => { showToast('Sigues en la web.'); hideInstallModal(); });
+            if ('serviceWorker' in navigator) { const swBlob = new Blob([`const CACHE='dazer-v5';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`], {type:'application/javascript'}); navigator.serviceWorker.register(URL.createObjectURL(swBlob)); }
+            const manifest = { name:'DAZER', short_name:'DAZER', start_url:window.location.href.split('?')[0], display:'standalone', background_color:'#000', theme_color:'#000', icons:[{src:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192"><rect width="192" height="192" fill="#000"/><text x="96" y="110" text-anchor="middle" font-size="80" font-weight="900" fill="#fff" font-family="sans-serif">D</text></svg>'), sizes:'192x192', type:'image/svg+xml'}] };
+            const link = document.createElement('link'); link.rel = 'manifest'; link.href = 'data:application/json;base64,' + btoa(JSON.stringify(manifest)); document.head.appendChild(link);
             window.addEventListener('DOMContentLoaded', async () => {
                 await runSplashSequence();
                 const saved = localStorage.getItem('dazer_choice');
-                if (saved === 'web' || saved === 'installed') {
-                    hideInstallModal();
-                } else {
-                    setTimeout(showInstallModal, 600);
-                    setTimeout(() => { if (!modal.classList.contains('active')) hideInstallModal(); }, 18000);
-                }
+                if (saved === 'web' || saved === 'installed') hideInstallModal();
+                else { setTimeout(showInstallModal, 600); setTimeout(() => { if (!modal.classList.contains('active')) hideInstallModal(); }, 18000); }
             });
         })();
     </script>
