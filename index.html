@@ -10,7 +10,6 @@
     <meta name="description" content="Plataforma épica - PAPIROMESA | ZALGERT | DAZER">
     <title>DAZER - Plataforma Épica</title>
 
-    <!-- Fuentes (carga asíncrona) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
@@ -20,8 +19,6 @@
             --bg: #000000;
             --text: #ffffff;
             --gray: #888888;
-            --light-gray: #cccccc;
-            --accent: #ffffff; /* calor monocromático */
         }
 
         * {
@@ -41,9 +38,6 @@
             min-height: 100dvh;
         }
 
-        /* =============================================
-           PANTALLAS DE CARGA (SPLASH SCREENS)
-           ============================================= */
         .splash-overlay {
             position: fixed;
             inset: 0;
@@ -80,7 +74,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .epic-text {
@@ -108,44 +102,32 @@
             animation: textExit 0.5s ease-in forwards;
         }
 
-        /* PAPIROMESA - Calor concentrado */
+        /* PAPIROMESA (3 segundos) */
         .splash-papiromesa .epic-text {
-            font-size: clamp(3rem, 8vw, 7rem);
-            text-shadow:
-                0 0 10px #ffffff,
-                0 0 30px rgba(255,255,255,0.8),
-                0 0 50px rgba(255,255,255,0.5),
-                0 0 80px rgba(255,255,255,0.3),
-                0 0 120px rgba(255,255,255,0.2);
-            animation: textEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
-                       fireFlicker 0.08s ease-in-out infinite;
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            text-shadow: 0 0 10px #ffffff, 0 0 30px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.5), 0 0 80px rgba(255,255,255,0.3);
+            animation: textEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, fireFlicker 0.08s ease-in-out infinite;
             animation-delay: 0s, 0.6s;
         }
         @keyframes fireFlicker {
             0%,100% { text-shadow: 0 0 10px #fff, 0 0 30px rgba(255,255,255,0.8), 0 0 50px rgba(255,255,255,0.5); }
-            25% { text-shadow: 0 0 14px #fff, 0 0 36px rgba(255,255,255,0.9), 0 0 70px rgba(255,255,255,0.6), 0 0 90px rgba(255,255,255,0.3); }
+            25% { text-shadow: 0 0 14px #fff, 0 0 36px rgba(255,255,255,0.9), 0 0 70px rgba(255,255,255,0.6); }
             50% { text-shadow: 0 0 8px #fff, 0 0 26px rgba(255,255,255,0.7), 0 0 54px rgba(255,255,255,0.4); }
-            75% { text-shadow: 0 0 16px #fff, 0 0 40px rgba(255,255,255,0.9), 0 0 74px rgba(255,255,255,0.6), 0 0 100px rgba(255,255,255,0.3); }
+            75% { text-shadow: 0 0 16px #fff, 0 0 40px rgba(255,255,255,0.9), 0 0 74px rgba(255,255,255,0.6); }
         }
         .splash-papiromesa .subtitle {
             color: #aaaaaa;
-            font-size: 1.2rem;
-            letter-spacing: 0.4em;
+            font-size: 1rem;
+            letter-spacing: 0.3em;
             animation: fadeInUp 0.8s ease 0.4s forwards;
             opacity: 0;
         }
 
-        /* ZALGERT - Energía disonante */
+        /* ZALGERT (3 segundos) */
         .splash-zalgert .epic-text {
-            font-size: clamp(3rem, 8vw, 7rem);
-            color: #ffffff;
-            text-shadow:
-                0 0 8px #ffffff,
-                0 0 24px rgba(255,255,255,0.7),
-                0 0 50px rgba(255,255,255,0.4),
-                0 0 90px rgba(255,255,255,0.2);
-            animation: textEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
-                       glitchShake 0.12s steps(2) infinite;
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            text-shadow: 0 0 8px #ffffff, 0 0 24px rgba(255,255,255,0.7), 0 0 50px rgba(255,255,255,0.4);
+            animation: textEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, glitchShake 0.12s steps(2) infinite;
             animation-delay: 0s, 0.6s;
         }
         @keyframes glitchShake {
@@ -157,24 +139,17 @@
         }
         .splash-zalgert .subtitle {
             color: #888888;
-            font-size: 1.2rem;
-            letter-spacing: 0.4em;
+            font-size: 1rem;
+            letter-spacing: 0.3em;
             animation: fadeInUp 0.8s ease 0.4s forwards;
             opacity: 0;
         }
 
-        /* DAZER - Poder majestuoso (doble duración) */
+        /* DAZER (5 segundos) */
         .splash-dazer .epic-text {
-            font-size: clamp(3.5rem, 9vw, 8rem);
-            color: #ffffff;
-            text-shadow:
-                0 0 8px #ffffff,
-                0 0 20px rgba(255,255,255,0.8),
-                0 0 40px rgba(255,255,255,0.5),
-                0 0 80px rgba(255,255,255,0.3),
-                0 0 130px rgba(255,255,255,0.2);
-            animation: textEntry 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
-                       majesticPulse 2s ease-in-out infinite;
+            font-size: clamp(3.2rem, 8vw, 6rem);
+            text-shadow: 0 0 8px #ffffff, 0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.5), 0 0 80px rgba(255,255,255,0.3), 0 0 120px rgba(255,255,255,0.2);
+            animation: textEntry 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, majesticPulse 2s ease-in-out infinite;
             animation-delay: 0s, 0.8s;
         }
         @keyframes majesticPulse {
@@ -183,22 +158,21 @@
         }
         .splash-dazer .subtitle {
             color: #aaaaaa;
-            font-size: 1.3rem;
-            letter-spacing: 0.5em;
+            font-size: 1.1rem;
+            letter-spacing: 0.4em;
             animation: fadeInUp 1s ease 0.5s forwards;
             opacity: 0;
         }
 
-        /* Símbolo DAZER (CSS puro, sin emojis) */
         .dazer-symbol {
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             border: 3px solid #ffffff;
             border-radius: 50%;
             position: relative;
-            margin-bottom: 0.5rem;
             animation: crownBounce 1.5s ease-in-out infinite;
             box-shadow: 0 0 20px rgba(255,255,255,0.5);
+            margin-bottom: 0.3rem;
         }
         .dazer-symbol::after {
             content: '';
@@ -225,7 +199,6 @@
             to { opacity: 0.9; transform: translateY(0); }
         }
 
-        /* Flash de transición (blanco) */
         .screen-flash {
             position: fixed;
             inset: 0;
@@ -240,9 +213,7 @@
             transition: opacity 0.05s ease;
         }
 
-        /* =============================================
-           MODAL DE INSTALACIÓN
-           ============================================= */
+        /* Modal instalación */
         .install-modal-overlay {
             position: fixed;
             inset: 0;
@@ -350,9 +321,7 @@
         .btn-continue-web { border-color: #333; color: #777; font-size: 0.85rem !important; }
         .btn-continue-web:hover { background: #1a1a1a; color: #aaa; }
 
-        /* =============================================
-           APP PRINCIPAL
-           ============================================= */
+        /* App principal */
         .app-container {
             display: none;
             min-height: 100vh;
@@ -415,14 +384,13 @@
             border-color: #555;
             color: #aaa;
         }
-        .placeholder-card .card-icon {
+        .card-icon {
             width: 40px;
             height: 40px;
             border: 2px solid #444;
             border-radius: 50%;
             position: relative;
         }
-        /* Iconos CSS puros (sin emojis) */
         .icon-video::after { content: ''; position: absolute; top: 50%; left: 55%; transform: translate(-50%,-50%); width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 14px solid #666; }
         .icon-reel::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 12px; height: 16px; border: 2px solid #666; border-radius: 3px; }
         .icon-chat::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 16px; height: 12px; border: 2px solid #666; border-radius: 4px; }
@@ -440,7 +408,6 @@
             color: #888;
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -462,7 +429,8 @@
         }
 
         @media (max-width: 600px) {
-            .epic-text { font-size: clamp(2.2rem, 12vw, 4rem) !important; }
+            .epic-text { font-size: clamp(1.8rem, 8vw, 3rem) !important; }
+            .splash-dazer .epic-text { font-size: clamp(2.5rem, 10vw, 4rem) !important; }
             .install-modal { padding: 1.8rem 1.2rem; }
             .app-content { grid-template-columns: 1fr; padding: 1rem; }
         }
@@ -472,42 +440,42 @@
 </head>
 <body class="no-scroll">
 
-    <!-- PAPIROMESA -->
+    <!-- PAPIROMESA (3s) -->
     <div class="splash-overlay splash-papiromesa" id="splash1">
         <canvas class="splash-canvas" id="canvas1"></canvas>
         <div class="splash-content">
             <span class="epic-text" id="text1">PAPIROMESA</span>
-            <span class="subtitle">EL ORTO DESPUÉS DE PAPIROMESA</span>
+            <span class="subtitle">repositorio de estudio</span>
         </div>
     </div>
 
-    <!-- ZALGERT -->
+    <!-- ZALGERT (3s) -->
     <div class="splash-overlay splash-zalgert hidden fully-removed" id="splash2">
         <canvas class="splash-canvas" id="canvas2"></canvas>
         <div class="splash-content">
             <span class="epic-text" id="text2">ZALGERT</span>
-            <span class="subtitle">CAOS Y PODER</span>
+            <span class="subtitle">Nos presentara a</span>
         </div>
     </div>
 
-    <!-- DAZER -->
+    <!-- DAZER (5s) -->
     <div class="splash-overlay splash-dazer hidden fully-removed" id="splash3">
         <canvas class="splash-canvas" id="canvas3"></canvas>
         <div class="splash-content">
             <div class="dazer-symbol"></div>
             <span class="epic-text" id="text3">DAZER</span>
-            <span class="subtitle">LEYENDA FORJADA</span>
+            <span class="subtitle">version estandar</span>
         </div>
     </div>
 
     <div class="screen-flash" id="screenFlash"></div>
 
-    <!-- MODAL INSTALACIÓN -->
+    <!-- Modal instalación -->
     <div class="install-modal-overlay" id="installModalOverlay">
         <div class="install-modal">
             <div class="modal-icon"></div>
             <h2>INSTALAR APLICACIÓN</h2>
-            <p>Lleva <strong style="color:#ffffff;">DAZER</strong> a tu pantalla de inicio. Rápido y siempre disponible.</p>
+            <p>Lleva <strong style="color:#ffffff;">DAZER</strong> a tu pantalla de inicio.</p>
             <div class="btn-group">
                 <button class="btn-install" id="btnInstall">[↓] A. INSTALAR</button>
                 <button class="btn-quick-link" id="btnQuickLink">[#] B. ENLACE RÁPIDO</button>
@@ -518,7 +486,7 @@
 
     <div class="toast" id="toast"></div>
 
-    <!-- APP PRINCIPAL -->
+    <!-- App principal -->
     <div class="app-container" id="appContainer">
         <header class="app-header">
             <span class="logo">DAZER</span>
@@ -553,7 +521,6 @@
 
     <script>
         (function() {
-            // Sistema de partículas monocromáticas
             class ParticleSystem {
                 constructor(canvasId, count = 120, speed = 1) {
                     this.canvas = document.getElementById(canvasId);
@@ -653,27 +620,30 @@
                 const t2 = document.getElementById('text2');
                 const t3 = document.getElementById('text3');
 
+                // PAPIROMESA 3s
                 ps1 = new ParticleSystem('canvas1', 150, 1.2);
                 ps1.start();
-                await new Promise(r => setTimeout(r, 1700));
+                await new Promise(r => setTimeout(r, 3000));
 
                 await flash(120);
                 ps1.stop();
                 await hideSplash(s1, t1);
 
+                // ZALGERT 3s
                 ps2 = new ParticleSystem('canvas2', 140, 1.4);
                 ps2.start();
                 await showSplash(s2, t2);
-                await new Promise(r => setTimeout(r, 1700));
+                await new Promise(r => setTimeout(r, 3000));
 
                 await flash(120);
                 ps2.stop();
                 await hideSplash(s2, t2);
 
+                // DAZER 5s
                 ps3 = new ParticleSystem('canvas3', 200, 1.0);
                 ps3.start();
                 await showSplash(s3, t3);
-                await new Promise(r => setTimeout(r, 3500));
+                await new Promise(r => setTimeout(r, 5000));
 
                 await flash(200);
                 ps3.stop();
@@ -682,7 +652,6 @@
                 document.body.classList.remove('no-scroll');
             }
 
-            // Instalación PWA
             let deferredPrompt = null;
             window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
 
@@ -730,9 +699,8 @@
                 hideInstallModal();
             });
 
-            // Service Worker mínimo
             if ('serviceWorker' in navigator) {
-                const swBlob = new Blob([`const CACHE='dazer-v2';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`], {type:'application/javascript'});
+                const swBlob = new Blob([`const CACHE='dazer-v4';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`], {type:'application/javascript'});
                 navigator.serviceWorker.register(URL.createObjectURL(swBlob));
             }
 
