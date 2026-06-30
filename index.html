@@ -14,7 +14,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Segoe UI','Orbitron','Rajdhani',system-ui,sans-serif; background:#000; color:#fff; overflow-x:hidden; user-select:none; min-height:100vh; min-height:100dvh; padding-bottom:70px; }
+        body { 
+            font-family:'Segoe UI','Orbitron','Rajdhani',system-ui,sans-serif; 
+            background:#000; 
+            color:#ffffff; 
+            overflow-x:hidden; 
+            user-select:none; 
+            min-height:100vh; 
+            min-height:100dvh; 
+            padding-bottom:80px; 
+        }
+        h1, h2, h3, h4, h5, h6, .epic-text, .profile-username, .welcome-dazer-name, .app-header .logo {
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255,255,255,0.6);
+        }
+        .subtitle, .profile-handle, .profile-bio, .stat-number, .stat-label, .post-item, .chat-msg, .bottom-nav button span, .toast {
+            color: #ffffff;
+            text-shadow: 0 0 4px rgba(255,255,255,0.4);
+        }
         .splash-overlay { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; background:#000; transition:opacity .3s; }
         .splash-overlay.hidden { opacity:0; pointer-events:none; transition:opacity .6s .2s; }
         .splash-overlay.fully-removed { display:none; }
@@ -24,28 +41,21 @@
         @keyframes textEntry { 0%{transform:scale(0) rotate(-8deg);opacity:0;filter:blur(15px)} 60%{transform:scale(1.08) rotate(2deg);opacity:1;filter:blur(0)} 100%{transform:scale(1) rotate(0);opacity:1;filter:blur(0)} }
         @keyframes textExit { 0%{transform:scale(1);opacity:1;filter:blur(0)} 100%{transform:scale(1.8) rotate(5deg);opacity:0;filter:blur(25px)} }
         .epic-text.exiting { animation:textExit .5s ease-in forwards; }
-
         .splash-papiromesa .epic-text { font-size:clamp(2.2rem,6vw,4rem); text-shadow:0 0 10px #fff,0 0 30px rgba(255,255,255,.8),0 0 50px rgba(255,255,255,.5),0 0 80px rgba(255,255,255,.3); animation:textEntry .6s cubic-bezier(0.175,0.885,0.32,1.275) forwards, fireFlicker .08s infinite; animation-delay:0s,.6s; }
         @keyframes fireFlicker { 0%,100%{text-shadow:0 0 10px #fff,0 0 30px rgba(255,255,255,.8),0 0 50px rgba(255,255,255,.5)} 25%{text-shadow:0 0 14px #fff,0 0 36px rgba(255,255,255,.9),0 0 70px rgba(255,255,255,.6)} 50%{text-shadow:0 0 8px #fff,0 0 26px rgba(255,255,255,.7),0 0 54px rgba(255,255,255,.4)} 75%{text-shadow:0 0 16px #fff,0 0 40px rgba(255,255,255,.9),0 0 74px rgba(255,255,255,.6)} }
         .splash-papiromesa .subtitle { color:#aaa; font-size:1rem; letter-spacing:.3em; animation:fadeInUp .8s .4s forwards; opacity:0; }
-
         .splash-zalgert .epic-text { font-size:clamp(2.2rem,6vw,4rem); text-shadow:0 0 8px #fff,0 0 24px rgba(255,255,255,.7),0 0 50px rgba(255,255,255,.4); animation:textEntry .6s cubic-bezier(0.175,0.885,0.32,1.275) forwards, glitchShake .12s steps(2) infinite; animation-delay:0s,.6s; }
         @keyframes glitchShake { 0%,100%{transform:translate(0,0)} 20%{transform:translate(-3px,2px);text-shadow:3px 0 #555,-3px 0 #999} 40%{transform:translate(3px,-1px);text-shadow:-2px 0 #fff,2px 0 #666} 60%{transform:translate(-1px,-3px);text-shadow:4px 0 #999,-4px 0 #ccc} 80%{transform:translate(2px,3px);text-shadow:-3px 0 #fff,3px 0 #888} }
         .splash-zalgert .subtitle { color:#888; font-size:1rem; letter-spacing:.3em; animation:fadeInUp .8s .4s forwards; opacity:0; }
-
         .splash-dazer .dazer-symbol { width:70px; height:70px; position:relative; display:flex; align-items:center; justify-content:center; margin-bottom:.3rem; }
         .dazer-symbol .circle { width:70px; height:70px; border:2px solid #fff; border-radius:50%; position:absolute; top:0; left:0; box-shadow:0 0 15px rgba(255,255,255,.4); }
         .dazer-symbol .diamond { width:30px; height:30px; background:#fff; transform:rotate(45deg); box-shadow:0 0 20px rgba(255,255,255,.8); }
-
         .splash-dazer .epic-text { font-size:clamp(3.2rem,8vw,6rem); text-shadow:0 0 8px #fff,0 0 20px rgba(255,255,255,.8),0 0 40px rgba(255,255,255,.5),0 0 80px rgba(255,255,255,.3),0 0 120px rgba(255,255,255,.2); animation:textEntry .8s cubic-bezier(0.175,0.885,0.32,1.275) forwards, majesticPulse 2s infinite; animation-delay:0s,.8s; }
         @keyframes majesticPulse { 0%,100%{transform:scale(1);text-shadow:0 0 8px #fff,0 0 20px rgba(255,255,255,.8),0 0 40px rgba(255,255,255,.5)} 50%{transform:scale(1.05);text-shadow:0 0 18px #fff,0 0 40px rgba(255,255,255,.9),0 0 70px rgba(255,255,255,.6),0 0 100px rgba(255,255,255,.3)} }
         .splash-dazer .subtitle { color:#aaa; font-size:1.1rem; letter-spacing:.4em; animation:fadeInUp 1s .5s forwards; opacity:0; }
-
         @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:.9;transform:translateY(0)} }
-
         .screen-flash { position:fixed; inset:0; z-index:10000; background:#fff; pointer-events:none; opacity:0; transition:opacity .08s; }
         .screen-flash.active { opacity:.95; transition:opacity .05s; }
-
         .install-modal-overlay { position:fixed; inset:0; z-index:8000; background:rgba(0,0,0,.95); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .5s; }
         .install-modal-overlay.active { opacity:1; pointer-events:all; }
         .install-modal { background:#0a0a0a; border:1px solid #333; border-radius:20px; padding:2.5rem 2rem; max-width:440px; width:90%; text-align:center; box-shadow:0 0 40px rgba(255,255,255,.1); transform:translateY(30px); transition:transform .5s cubic-bezier(0.175,0.885,0.32,1.275); }
@@ -62,7 +72,6 @@
         .btn-install:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(255,255,255,.5); }
         .btn-quick-link { border-color:#555; } .btn-quick-link:hover { background:#1a1a1a; border-color:#888; }
         .btn-continue-web { border-color:#333; color:#777; font-size:.85rem !important; } .btn-continue-web:hover { background:#1a1a1a; color:#aaa; }
-
         .app-container { display:none; min-height:100vh; min-height:100dvh; flex-direction:column; background:#000; opacity:0; transition:opacity .6s; }
         .app-container.visible { display:flex; opacity:1; }
         .app-header { padding:1.2rem 1.5rem; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #222; position:sticky; top:0; z-index:100; background:rgba(0,0,0,.95); backdrop-filter:blur(10px); }
@@ -71,11 +80,10 @@
         .search-bar { margin-bottom:1.5rem; }
         .search-bar input { width:100%; padding:1rem; background:#111; border:1px solid #333; border-radius:12px; color:#fff; font-family:'Rajdhani',sans-serif; font-size:1.1rem; outline:none; }
         .search-bar input:focus { border-color:#fff; }
-
         .profiles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
         .profile-card { background:#0a0a0a; border:1px solid #222; border-radius:16px; padding:1.5rem; text-align:center; cursor:pointer; transition:all .3s; }
         .profile-card:hover { border-color:#fff; }
-        .profile-card .avatar { width:70px; height:70px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; margin:0 auto .5rem; font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:700; color:#fff; }
+        .profile-card .avatar { width:70px; height:70px; border-radius:50%; border:2px solid #fff; display:flex; align-items:center; justify-content:center; margin:0 auto .5rem; font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:700; color:#fff; background-size:cover; background-position:center; }
         .profile-card .username { font-family:'Rajdhani',sans-serif; font-weight:600; font-size:1.1rem; margin-bottom:.3rem; }
         .profile-card .status-dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:.3rem; }
         .status-dot.online { background:#00ff00; box-shadow:0 0 8px #00ff00; }
@@ -83,7 +91,6 @@
         .profile-card .actions { margin-top:.5rem; display:flex; gap:.5rem; justify-content:center; }
         .profile-card .actions button { background:transparent; border:1px solid #555; color:#fff; padding:.4rem 1rem; border-radius:20px; font-size:.75rem; cursor:pointer; transition:all .3s; }
         .profile-card .actions button:hover { background:#1a1a1a; border-color:#888; }
-
         .panel-overlay { position:fixed; inset:0; z-index:7000; background:rgba(0,0,0,.9); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .4s; }
         .panel-overlay.active { opacity:1; pointer-events:all; }
         .panel { background:#0a0a0a; border:1px solid #333; border-radius:20px; padding:2rem; width:90%; max-width:400px; display:flex; flex-direction:column; gap:1.2rem; transform:translateY(20px); transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275); }
@@ -101,24 +108,24 @@
         .report-list { max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:.3rem; }
         .report-list label { display:flex; align-items:center; gap:.5rem; padding:.5rem; color:#ccc; cursor:pointer; font-size:.9rem; }
         .report-list label:hover { color:#fff; }
-
-        .profile-header { display:flex; flex-direction:column; align-items:center; padding:1rem 0 2rem; border-bottom:1px solid #222; }
-        .profile-pic { width:120px; height:120px; border-radius:50%; border:3px solid #fff; display:flex; align-items:center; justify-content:center; background:#111; margin-bottom:1rem; }
+        .profile-cover { width:100%; height:150px; background:#111; border-radius:12px; margin-bottom:-50px; position:relative; background-size:cover; background-position:center; }
+        .profile-pic-wrapper { display:flex; justify-content:center; position:relative; z-index:10; }
+        .profile-pic { width:120px; height:120px; border-radius:50%; border:3px solid #fff; display:flex; align-items:center; justify-content:center; background:#111; background-size:cover; background-position:center; cursor:pointer; }
         .profile-pic .initials { font-family:'Orbitron',sans-serif; font-size:2.8rem; font-weight:700; color:#fff; }
-        .profile-info { text-align:center; margin-bottom:1.5rem; }
-        .profile-username { font-family:'Rajdhani',sans-serif; font-size:1.6rem; font-weight:700; letter-spacing:.05em; margin-bottom:.2rem; }
-        .profile-handle { color:#777; font-size:.9rem; margin-bottom:.5rem; }
-        .profile-bio { color:#aaa; font-size:.9rem; max-width:300px; line-height:1.4; }
-        .profile-stats { display:flex; gap:2rem; margin-bottom:1.5rem; }
+        .profile-info { text-align:center; margin-top:60px; margin-bottom:1rem; }
+        .profile-username { font-family:'Rajdhani',sans-serif; font-size:1.6rem; font-weight:700; letter-spacing:.05em; }
+        .profile-bio { color:#aaa; max-width:300px; margin:0 auto; line-height:1.4; }
+        .profile-stats { display:flex; gap:2rem; justify-content:center; margin:1rem 0; }
         .stat-item { text-align:center; }
-        .stat-number { font-family:'Orbitron',sans-serif; font-size:1.2rem; font-weight:700; color:#fff; }
-        .stat-label { font-size:.7rem; color:#888; letter-spacing:.05em; text-transform:uppercase; }
-        .edit-profile-btn { background:transparent; border:1px solid #555; color:#fff; padding:.6rem 2rem; border-radius:20px; font-family:'Orbitron',sans-serif; font-weight:600; font-size:.8rem; cursor:pointer; transition:all .3s; }
-        .edit-profile-btn:hover { background:#1a1a1a; border-color:#888; }
-        .posts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin-top:2rem; }
-        .post-item { aspect-ratio:1/1; background:#0a0a0a; border:1px solid #222; display:flex; align-items:center; justify-content:center; color:#555; font-size:2rem; transition:all .3s; }
+        .stat-number { font-family:'Orbitron',sans-serif; font-size:1.2rem; font-weight:700; }
+        .stat-label { font-size:.7rem; color:#888; text-transform:uppercase; }
+        .profile-tabs { display:flex; justify-content:center; gap:1.5rem; border-bottom:1px solid #222; margin:1.5rem 0; padding-bottom:.5rem; }
+        .profile-tab { background:transparent; border:none; color:#888; font-family:'Orbitron',sans-serif; font-size:.85rem; cursor:pointer; transition:color .3s; }
+        .profile-tab.active { color:#fff; border-bottom:2px solid #fff; }
+        .posts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin-top:1rem; }
+        .post-item { aspect-ratio:1/1; background:#0a0a0a; border:1px solid #222; display:flex; align-items:center; justify-content:center; color:#555; font-size:2rem; transition:all .3s; overflow:hidden; position:relative; }
+        .post-item img, .post-item video { width:100%; height:100%; object-fit:cover; }
         .post-item:hover { border-color:#fff; color:#fff; }
-
         .chat-container { display:flex; flex-direction:column; height:70vh; }
         .chat-messages { flex:1; overflow-y:auto; padding:1rem; display:flex; flex-direction:column; gap:.8rem; }
         .chat-msg { max-width:80%; padding:.8rem 1rem; border-radius:12px; font-size:.95rem; line-height:1.4; }
@@ -127,23 +134,52 @@
         .chat-input { display:flex; gap:.5rem; padding:1rem; border-top:1px solid #222; }
         .chat-input input { flex:1; padding:.8rem; background:#111; border:1px solid #333; border-radius:20px; color:#fff; font-family:'Rajdhani',sans-serif; outline:none; }
         .chat-input button { background:#fff; color:#000; border:none; padding:.8rem 1.5rem; border-radius:20px; font-family:'Orbitron',sans-serif; font-weight:700; cursor:pointer; }
-
-        /* Barra de navegación inferior */
-        .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(0,0,0,.98); border-top:1px solid #222; display:flex; justify-content:space-around; align-items:center; padding:.5rem 0; z-index:200; backdrop-filter:blur(10px); height:60px; }
-        .bottom-nav button { background:transparent; border:none; color:#888; font-size:.7rem; display:flex; flex-direction:column; align-items:center; gap:.2rem; cursor:pointer; transition:color .3s; font-family:'Rajdhani',sans-serif; }
-        .bottom-nav button.active { color:#fff; }
-        .bottom-nav button svg { width:22px; height:22px; fill:currentColor; }
-
+        .bottom-nav { 
+            display: none; 
+            position:fixed; 
+            bottom:0; left:0; right:0; 
+            background:rgba(0,0,0,.98); 
+            border-top:1px solid #222; 
+            justify-content:space-around; 
+            align-items:center; 
+            padding:.5rem 0; 
+            z-index:200; 
+            backdrop-filter:blur(10px); 
+            height:70px; 
+            overflow-x:auto; 
+            white-space:nowrap; 
+        }
+        .bottom-nav.visible { display: flex; }
+        .bottom-nav button { background:transparent; border:none; color:#888; font-size:.65rem; display:inline-flex; flex-direction:column; align-items:center; gap:.3rem; cursor:pointer; transition:all .3s; font-family:'Rajdhani',sans-serif; padding:0 .4rem; min-width:50px; position:relative; }
+        .bottom-nav button.active { color:#fff; text-shadow: 0 0 6px rgba(255,255,255,0.7); }
+        .bottom-nav button svg { width:26px; height:26px; fill:currentColor; filter: drop-shadow(0 0 4px currentColor); }
+        .bottom-nav button.active svg { filter: drop-shadow(0 0 6px #fff); }
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #ff0000;
+            color: #fff;
+            border-radius: 50%;
+            min-width: 16px;
+            height: 16px;
+            font-size: .6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            font-weight: bold;
+        }
+        .black-hole { width:120px; height:120px; border-radius:50%; background:radial-gradient(circle, #000 20%, #222 70%, #000 100%); box-shadow:0 0 30px rgba(0,0,0,.8), 0 0 60px rgba(0,0,0,.5); margin:2rem auto; }
         .app-footer { text-align:center; padding:1.5rem; color:#444; font-size:.8rem; border-top:1px solid #1a1a1a; letter-spacing:.05em; margin-top:auto; }
         .toast { position:fixed; bottom:70px; left:50%; transform:translateX(-50%) translateY(100px); background:#1a1a1a; color:#fff; padding:.8rem 2rem; border-radius:30px; border:1px solid #444; z-index:9000; font-weight:600; letter-spacing:.04em; transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275); pointer-events:none; }
         .toast.show { transform:translateX(-50%) translateY(0); }
-
         @media (max-width:600px) { .profiles-grid { grid-template-columns:repeat(2,1fr); } .epic-text { font-size:clamp(1.8rem,8vw,3rem) !important; } .splash-dazer .epic-text { font-size:clamp(2.5rem,10vw,4rem) !important; } .install-modal { padding:1.8rem 1.2rem; } }
         body.no-scroll { overflow:hidden; }
     </style>
 </head>
 <body class="no-scroll">
-    <!-- Splash screens -->
+    <!-- Splash screens (PAPIROMESA, ZALGERT, DAZER) -->
     <div class="splash-overlay splash-papiromesa" id="splash1">
         <canvas class="splash-canvas" id="canvas1"></canvas>
         <div class="splash-content">
@@ -198,7 +234,7 @@
         </div>
     </div>
 
-    <!-- Panel creación de cuenta -->
+    <!-- Panel creación de cuenta (ahora con Sheitel) -->
     <div class="panel-overlay" id="createAccountPanel">
         <div class="panel">
             <h3>NUEVA CUENTA</h3>
@@ -212,6 +248,7 @@
             <select id="newHierarchy">
                 <option value="Gratuito">Gratuito</option>
                 <option value="Haiku">Haiku</option>
+                <option value="Sheitel">Sheitel</option>
                 <option value="Admin">Admin</option>
                 <option value="Director">Director</option>
             </select>
@@ -243,13 +280,23 @@
         </div>
     </div>
 
+    <!-- Panel nueva publicación -->
+    <div class="panel-overlay" id="newPostPanel">
+        <div class="panel">
+            <h3>NUEVA PUBLICACIÓN</h3>
+            <input type="file" id="postFileInput" accept="image/*,video/*">
+            <div id="postPreview" style="max-height:200px; overflow:hidden; border-radius:10px; margin-top:.5rem;"></div>
+            <button id="uploadPostBtn">SUBIR PUBLICACIÓN</button>
+            <button class="secondary" id="cancelPostBtn">CANCELAR</button>
+        </div>
+    </div>
+
     <!-- App principal -->
     <div class="app-container" id="appContainer">
         <header class="app-header">
             <span class="logo">DAZER</span>
-            <div style="display:flex; gap:1rem;">
-                <button class="create-account-btn" id="openMasterPasswordBtn" style="font-size:.75rem; padding:.4rem 1rem;">CREAR CUENTA</button>
-                <button class="create-account-btn" id="logoutBtn" style="display:none; font-size:.75rem; padding:.4rem 1rem;">CERRAR SESIÓN</button>
+            <div id="headerActions" style="display:flex; gap:1rem;">
+                <!-- se rellena con JS -->
             </div>
         </header>
         <main class="app-content" id="appContent"></main>
@@ -258,35 +305,80 @@
         </footer>
     </div>
 
-    <!-- Barra de navegación inferior -->
+    <!-- Barra de navegación inferior (con badge de notificación) -->
     <nav class="bottom-nav" id="bottomNav">
-        <button data-section="comercial" class="active">
-            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><line x1="2" y1="9" x2="22" y2="9" stroke="currentColor" stroke-width="2"/></svg>
-            Comercial
+        <button data-section="salon" class="active">
+            <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="7" y="10" width="4" height="6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="13" r="2" fill="currentColor"/></svg>
+            <span>SALÓN</span>
+        </button>
+        <button data-section="comunicacion">
+            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-14.8 6.32L3 18l.75-3.5A8.38 8.38 0 0 1 3 11.5C3 6.81 7.03 3 12 3s9 3.81 9 8.5z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11h.01M12 11h.01M16 11h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>COMUNICACIÓN</span>
+            <span class="notification-badge" id="unreadBadge" style="display:none;">0</span>
         </button>
         <button data-section="navegar">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="12,6 12,18 6,12" fill="currentColor"/></svg>
-            Navegar
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><ellipse cx="12" cy="12" rx="4" ry="10" fill="none" stroke="currentColor" stroke-width="2"/><line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2"/></svg>
+            <span>NAVEGAR</span>
         </button>
         <button data-section="videos">
             <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
-            Videos
+            <span>VIDEOS</span>
         </button>
         <button data-section="reels">
             <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="10,8 16,12 10,16" fill="currentColor"/></svg>
-            REELS
+            <span>REELS</span>
+        </button>
+        <button data-section="publicacion">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="2"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2"/></svg>
+            <span>PUBLICACIÓN</span>
+        </button>
+        <button data-section="bodega">
+            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><line x1="2" y1="10" x2="22" y2="10" stroke="currentColor" stroke-width="2"/><rect x="8" y="12" width="8" height="6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>BODEGA</span>
+        </button>
+        <button data-section="atico">
+            <svg viewBox="0 0 24 24"><path d="M2 20L12 4l10 16z" fill="none" stroke="currentColor" stroke-width="2"/><rect x="8" y="14" width="8" height="6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>ÁTICO</span>
+        </button>
+        <button data-section="boveda">
+            <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="13" r="3" fill="currentColor"/><line x1="12" y1="10" x2="12" y2="13" stroke="#000" stroke-width="2"/></svg>
+            <span>BÓVEDA</span>
+        </button>
+        <button data-section="gdz">
+            <svg viewBox="0 0 24 24"><polygon points="12,2 22,22 2,22" fill="none" stroke="currentColor" stroke-width="2"/><text x="7" y="17" font-size="8" fill="currentColor" font-weight="bold">GDZ</text></svg>
+            <span>GDZ</span>
         </button>
         <button data-section="suscripcion">
-            <svg viewBox="0 0 24 24"><path d="M20 12c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm-8 5c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5z" fill="currentColor"/></svg>
-            Suscripción
+            <svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" fill="currentColor"/></svg>
+            <span>SUSCRIPCIÓN</span>
         </button>
-        <button data-section="ajustes">
+        <button data-section="dazerai">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18V4c4.41 0 8 3.59 8 8s-3.59 8-8 8z" fill="currentColor"/></svg>
+            <span>DAZER AI</span>
+        </button>
+        <button data-section="haiku">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="22" x2="12" y2="17" stroke="currentColor" stroke-width="2"/><path d="M8 10h.01M12 10h.01M16 10h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>C. HAIKU</span>
+        </button>
+        <button data-section="sheitel">
+            <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><line x1="8" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="2"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2"/></svg>
+            <span>C. SHEITEL</span>
+        </button>
+        <button data-section="inteligente">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18V4c4.41 0 8 3.59 8 8s-3.59 8-8 8z" fill="currentColor"/><circle cx="12" cy="12" r="4" fill="#000"/></svg>
+            <span>C. INTELIGENTE</span>
+        </button>
+        <button data-section="modus">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/></svg>
+            <span>MODUS</span>
+        </button>
+        <button data-section="configuracion">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-            Ajustes
+            <span>CONFIG.</span>
         </button>
         <button data-section="miperfil">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-            Mi Perfil
+            <span>MI PERFIL</span>
         </button>
     </nav>
 
@@ -296,7 +388,7 @@
 
     <script type="module">
         import { initializeApp } from 'firebase/app';
-        import { getFirestore, collection, doc, setDoc, getDoc, getDocs, onSnapshot, serverTimestamp, query, orderBy, limit, runTransaction } from 'firebase/firestore';
+        import { getFirestore, collection, doc, setDoc, getDoc, getDocs, onSnapshot, serverTimestamp, query, orderBy, limit, runTransaction, updateDoc, where, deleteDoc } from 'firebase/firestore';
 
         const firebaseConfig = {
             apiKey: "AIzaSyCmJhsqeXRJZEJO7Z45KPnUk9GccrcpXv0",
@@ -311,14 +403,18 @@
         const db = getFirestore(app);
         const MASTER_PASSWORD = '29112009';
         const MAX_ACCOUNTS = 1000;
-        const REPORT_NUMBER = '50368405099'; // El Salvador
+        const REPORT_NUMBER = '50368405099';
 
         let allAccounts = [];
         let currentUser = null;
         let selectedAccountId = null;
-        let currentSection = 'comercial'; // sección activa
+        let userPosts = [];
+        let currentSection = 'salon';
+        let friendSearchFilter = '';
 
-        // ===================== PARTÍCULAS =====================
+        const notificationsRef = collection(db, 'notifications');
+
+        // ----- Funciones de partículas y splash (sin cambios) -----
         class ParticleSystem {
             constructor(canvasId, count = 120, speed = 1) {
                 this.canvas = document.getElementById(canvasId);
@@ -382,7 +478,7 @@
             document.body.classList.remove('no-scroll');
         }
 
-        // ===================== PWA =====================
+        // ----- PWA y modal de instalación -----
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; });
         const modal = document.getElementById('installModalOverlay'), appContainer = document.getElementById('appContainer'), toast = document.getElementById('toast');
@@ -399,85 +495,123 @@
         document.getElementById('btnContinueWeb').addEventListener('click', () => { showToast('Sigues en la web.'); hideInstallModal(); });
 
         if ('serviceWorker' in navigator) {
-            const swBlob = new Blob([`const CACHE='dazer-v18';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`], {type:'application/javascript'});
+            const swBlob = new Blob([`const CACHE='dazer-v31';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`], {type:'application/javascript'});
             navigator.serviceWorker.register(URL.createObjectURL(swBlob));
         }
-        // Ícono PWA con el logo DAZER (círculo + triángulo + líneas)
         const dazerIcon = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192"><rect width="192" height="192" rx="32" fill="#000"/><circle cx="96" cy="96" r="70" fill="none" stroke="#fff" stroke-width="4"/><polygon points="96,50 130,110 62,110" fill="#fff"/><line x1="96" y1="140" x2="96" y2="160" stroke="#fff" stroke-width="4" stroke-linecap="round"/><line x1="76" y1="155" x2="80" y2="170" stroke="#fff" stroke-width="3" stroke-linecap="round"/><line x1="116" y1="155" x2="112" y2="170" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>');
         const manifest = { name:'DAZER', short_name:'DAZER', start_url:window.location.href.split('?')[0], display:'standalone', background_color:'#000', theme_color:'#000', icons:[{src: dazerIcon, sizes:'192x192', type:'image/svg+xml'}] };
         const link = document.createElement('link'); link.rel = 'manifest'; link.href = 'data:application/json;base64,' + btoa(JSON.stringify(manifest)); document.head.appendChild(link);
 
-        // ===================== FUNCIONES PRINCIPALES =====================
         async function loadAccounts() {
             const qs = await getDocs(collection(db, 'accounts'));
             allAccounts = [];
             qs.forEach(doc => allAccounts.push({ id: doc.id, ...doc.data() }));
         }
 
-        function renderAccounts(filter = '') {
+        async function loadUserPosts() {
+            if (!currentUser) return;
+            const qs = await getDocs(query(collection(db, 'posts'), orderBy('createdAt', 'desc')));
+            userPosts = [];
+            qs.forEach(doc => { if (doc.data().userId === currentUser.id) userPosts.push({ id: doc.id, ...doc.data() }); });
+        }
+
+        function toggleBottomNav(show) {
+            const nav = document.getElementById('bottomNav');
+            if (show) nav.classList.add('visible'); else nav.classList.remove('visible');
+        }
+
+        function updateHeaderButtons() {
+            const headerActions = document.getElementById('headerActions');
+            if (currentUser) {
+                headerActions.innerHTML = `<button class="create-account-btn" id="refreshBtn" style="font-size:.75rem; padding:.4rem 1rem;">REFRESCAR</button>
+                                           <button class="create-account-btn" id="logoutBtn" style="font-size:.75rem; padding:.4rem 1rem;">CERRAR SESIÓN</button>`;
+                document.getElementById('refreshBtn').addEventListener('click', () => switchSection(currentSection));
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    currentUser = null; userPosts = [];
+                    toggleBottomNav(false);
+                    showToast('Sesión cerrada.');
+                    updateHeaderButtons();
+                    renderWelcomeScreen();
+                });
+            } else {
+                headerActions.innerHTML = `<button class="create-account-btn" id="refreshBtn" style="font-size:.75rem; padding:.4rem 1rem;">REFRESCAR</button>
+                                           <button class="create-account-btn" id="requestAccountBtn" style="font-size:.75rem; padding:.4rem 1rem;">PEDIR CUENTA</button>
+                                           <button class="create-account-btn" id="openMasterPasswordBtn" style="font-size:.75rem; padding:.4rem 1rem;">CREAR CUENTA</button>`;
+                document.getElementById('refreshBtn').addEventListener('click', () => switchSection(currentSection));
+                document.getElementById('requestAccountBtn').addEventListener('click', () => {
+                    window.open(`https://wa.me/${REPORT_NUMBER}?text=Hola, quiero solicitar una cuenta en DAZER.`, '_blank');
+                });
+                document.getElementById('openMasterPasswordBtn').addEventListener('click', () => {
+                    document.getElementById('masterPasswordPanel').classList.add('active');
+                    document.getElementById('masterPasswordInput').value = '';
+                    document.getElementById('masterPasswordError').classList.remove('show');
+                });
+            }
+        }
+
+        function renderWelcomeScreen() {
+            currentSection = 'welcome';
+            toggleBottomNav(false);
             const container = document.getElementById('appContent');
-            if (!filter || filter.trim() === '') {
-                container.innerHTML = `<div class="search-bar"><input type="text" id="searchInput" placeholder="Buscar cuenta por nombre..."></div><p style="text-align:center;color:#888;margin-top:3rem;">Busca una cuenta para empezar</p>`;
-                document.getElementById('searchInput').addEventListener('input', (e) => renderAccounts(e.target.value));
-                return;
-            }
-            const filtered = allAccounts.filter(acc => {
-                const name = acc.username ? acc.username.toLowerCase() : '';
-                return name.includes(filter.toLowerCase());
-            });
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="search-bar"><input type="text" id="searchInput" placeholder="Buscar cuenta por nombre..." value="${filter}"></div><p style="text-align:center;color:#888;">No se encontraron cuentas.</p>`;
-                document.getElementById('searchInput').addEventListener('input', (e) => renderAccounts(e.target.value));
-                return;
-            }
-            let html = `<div class="search-bar"><input type="text" id="searchInput" placeholder="Buscar cuenta por nombre..." value="${filter}"></div><div class="profiles-grid">`;
-            filtered.forEach(acc => {
-                const name = acc.username || '?';
-                const initial = name.charAt(0).toUpperCase();
-                const isOnline = Math.random() > 0.5;
-                const statusClass = isOnline ? 'online' : 'offline';
-                html += `
-                    <div class="profile-card" data-account-id="${acc.id}">
-                        <div class="avatar">${initial}</div>
-                        <div class="username">${name}</div>
-                        <div><span class="status-dot ${statusClass}"></span>${isOnline ? 'En línea' : 'Desconectado'}</div>
-                        <div class="actions">
-                            <button class="login-btn">Iniciar</button>
-                            <button class="report-btn">Reportar</button>
-                        </div>
+            container.innerHTML = `
+                <div style="text-align:center; padding-top:2rem;">
+                    <div class="dazer-symbol" style="margin:0 auto 1rem;"><div class="circle"></div><div class="diamond"></div></div>
+                    <div style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:clamp(2.5rem,6vw,4rem); letter-spacing:.15em; color:#fff; text-shadow:0 0 10px rgba(255,255,255,.6);">DAZER</div>
+                    <div style="font-family:'Rajdhani',sans-serif; font-size:1.5rem; font-weight:600; margin:1rem 0; color:#aaa;">Bienvenid@</div>
+                    <div style="max-width:500px; margin:1.5rem auto;">
+                        <input type="text" id="welcomeSearchInput" placeholder="Busca tu cuenta para comenzar..." style="width:100%; padding:1rem; background:#111; border:1px solid #333; border-radius:12px; color:#fff; font-family:'Rajdhani',sans-serif; font-size:1.1rem; outline:none;">
                     </div>
-                `;
-            });
-            html += '</div>';
-            container.innerHTML = html;
-
-            document.getElementById('searchInput').addEventListener('input', (e) => renderAccounts(e.target.value));
-
-            document.querySelectorAll('.login-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
+                    <div id="accountsGrid" class="profiles-grid" style="margin-top:1.5rem;"></div>
+                </div>
+            `;
+            const searchInput = document.getElementById('welcomeSearchInput');
+            const accountsGrid = document.getElementById('accountsGrid');
+            function updateGrid(filter = '') {
+                const filtered = allAccounts.filter(acc => (acc.username||'').toLowerCase().includes(filter.toLowerCase()));
+                if (filter.trim() === '') { accountsGrid.innerHTML = ''; return; }
+                if (filtered.length === 0) { accountsGrid.innerHTML = '<p style="text-align:center;color:#888;grid-column:span 3;">No se encontraron cuentas.</p>'; return; }
+                accountsGrid.innerHTML = filtered.map(acc => {
+                    const name = acc.username||'?';
+                    const initial = name.charAt(0).toUpperCase();
+                    const isOnline = Math.random() > 0.5;
+                    const avatarStyle = acc.profilePic ? `style="background-image:url('${acc.profilePic}');"` : '';
+                    return `<div class="profile-card" data-account-id="${acc.id}">
+                        <div class="avatar" ${avatarStyle}>${acc.profilePic?'':initial}</div>
+                        <div class="username" style="color:${acc.nameColor||'#fff'}">${name}</div>
+                        <div><span class="status-dot ${isOnline?'online':'offline'}"></span>${isOnline?'En línea':'Desconectado'}</div>
+                        <div class="actions"><button class="login-btn">Iniciar</button><button class="report-btn">Reportar</button></div>
+                    </div>`;
+                }).join('');
+                document.querySelectorAll('.login-btn').forEach(b => b.addEventListener('click', e => {
                     const card = e.target.closest('.profile-card');
                     selectedAccountId = card.dataset.accountId;
                     document.getElementById('loginPassword').value = '';
                     document.getElementById('loginError').classList.remove('show');
                     document.getElementById('loginPanel').classList.add('active');
-                });
-            });
-            document.querySelectorAll('.report-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const card = e.target.closest('.profile-card');
-                    selectedAccountId = card.dataset.accountId;
+                }));
+                document.querySelectorAll('.report-btn').forEach(b => b.addEventListener('click', e => {
+                    selectedAccountId = e.target.closest('.profile-card').dataset.accountId;
                     openReportPanel();
-                });
-            });
+                }));
+            }
+            searchInput.addEventListener('input', e => updateGrid(e.target.value));
+        }
+
+        function renderSalon() {
+            currentSection = 'salon';
+            document.getElementById('appContent').innerHTML = `
+                <div style="text-align:center;">
+                    <div class="dazer-symbol" style="margin:0 auto 1rem;"><div class="circle"></div><div class="diamond"></div></div>
+                    <div style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:2rem; letter-spacing:.1em;">DAZER</div>
+                    <div style="font-family:'Rajdhani',sans-serif; font-size:1.3rem; color:#aaa;">Estandar</div>
+                    <div class="black-hole"></div>
+                </div>
+            `;
+            document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.toggle('active', b.dataset.section === 'salon'));
         }
 
         function openReportPanel() {
-            const reasons = [
-                'Duplicación de contenido', 'Cuenta robada', 'Porno infantil', 'Gore', 'Tacañería',
-                'Abuso corporal', 'Violación', 'Agnafen', 'Estafa', 'Contenido sin sentido',
-                'Stalker', 'Menor de edad', 'Hacker', 'Cuenta muerta', 'Pantallazo de ads',
-                'Spamer o spam', 'Cuenta sin GDZ'
-            ];
+            const reasons = ['Duplicación de contenido','Cuenta robada','Porno infantil','Gore','Tacañería','Abuso corporal','Violación','Agnafen','Estafa','Contenido sin sentido','Stalker','Menor de edad','Hacker','Cuenta muerta','Pantallazo de ads','Spamer o spam','Cuenta sin GDZ'];
             document.getElementById('reportList').innerHTML = reasons.map(r => `<label><input type="radio" name="reportReason" value="${r}"> ${r}</label>`).join('');
             document.getElementById('reportPanel').classList.add('active');
         }
@@ -486,243 +620,435 @@
             const reason = document.querySelector('input[name="reportReason"]:checked');
             if (!reason) { showToast('Selecciona un motivo.'); return; }
             const account = allAccounts.find(a => a.id === selectedAccountId);
-            const accountName = account ? account.username : 'desconocida';
-            const message = `Se ha reportado la cuenta ${accountName} por el motivo: ${reason.value}`;
-            window.open(`https://wa.me/${REPORT_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+            window.open(`https://wa.me/${REPORT_NUMBER}?text=${encodeURIComponent(`Reporte de cuenta ${account?.username||'desconocida'}: ${reason.value}`)}`, '_blank');
             document.getElementById('reportPanel').classList.remove('active');
         });
-
         document.getElementById('cancelReportBtn').addEventListener('click', () => document.getElementById('reportPanel').classList.remove('active'));
 
         document.getElementById('loginConfirmBtn').addEventListener('click', async () => {
-            const password = document.getElementById('loginPassword').value;
+            const pw = document.getElementById('loginPassword').value;
             if (!selectedAccountId) return;
-            const account = allAccounts.find(a => a.id === selectedAccountId);
-            if (account && account.password === password) {
-                currentUser = account;
+            const acc = allAccounts.find(a => a.id === selectedAccountId);
+            if (acc && acc.password === pw) {
+                currentUser = acc;
                 document.getElementById('loginPanel').classList.remove('active');
-                document.getElementById('logoutBtn').style.display = 'block';
-                showToast(`Bienvenido, ${account.username}`);
-                renderProfileView(account);
-            } else {
-                document.getElementById('loginError').classList.add('show');
-            }
+                updateHeaderButtons();
+                toggleBottomNav(true);
+                startNotificationListener();
+                showToast(`Bienvenido, ${acc.username}`);
+                await loadUserPosts();
+                renderSalon();
+            } else document.getElementById('loginError').classList.add('show');
         });
-
         document.getElementById('cancelLoginBtn').addEventListener('click', () => document.getElementById('loginPanel').classList.remove('active'));
 
+        let profileTab = 'posts';
+
         function renderProfileView(account) {
+            currentSection = 'miperfil';
             const container = document.getElementById('appContent');
             const name = account.username;
+            const avatarStyle = account.profilePic ? `style="background-image:url('${account.profilePic}');"` : '';
             container.innerHTML = `
-                <div class="search-bar"><input type="text" id="profileSearchInput" placeholder="Buscar otro usuario..."></div>
-                <div class="profile-header">
-                    <div class="profile-pic"><span class="initials">${name.charAt(0).toUpperCase()}</span></div>
-                    <div class="profile-info">
-                        <div class="profile-username">${name.toUpperCase()}</div>
-                        <div class="profile-handle">${name.toLowerCase()}.dazer</div>
-                        <div class="profile-bio">Jerarquía: ${account.hierarchy || 'Gratuito'}</div>
+                <div class="profile-cover" id="profileCover" style="background-image:url('${account.coverPic || ''}')"></div>
+                <input type="file" id="coverPicInput" accept="image/*" style="display:none;">
+                <div class="profile-pic-wrapper">
+                    <div class="profile-pic" id="profilePic" ${avatarStyle}>
+                        ${account.profilePic ? '' : `<span class="initials">${name.charAt(0).toUpperCase()}</span>`}
                     </div>
-                    <div class="profile-stats">
-                        <div class="stat-item"><div class="stat-number">0</div><div class="stat-label">Publicaciones</div></div>
-                        <div class="stat-item"><div class="stat-number">0</div><div class="stat-label">Seguidores</div></div>
-                        <div class="stat-item"><div class="stat-number">0</div><div class="stat-label">Seguidos</div></div>
-                    </div>
-                    <button class="edit-profile-btn">EDITAR PERFIL</button>
+                    <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
                 </div>
-                <div class="posts-grid">
-                    ${Array(9).fill('<div class="post-item">+</div>').join('')}
+                <div class="profile-info">
+                    <div class="profile-username" style="color:${account.nameColor||'#fff'}">${name.toUpperCase()}</div>
+                    <div class="profile-bio">${account.bio || 'Sin biografía'}</div>
                 </div>
+                <div class="profile-stats">
+                    <div class="stat-item"><div class="stat-number">${userPosts.length}</div><div class="stat-label">Publicaciones</div></div>
+                    <div class="stat-item"><div class="stat-number">0</div><div class="stat-label">Seguidores</div></div>
+                    <div class="stat-item"><div class="stat-number">0</div><div class="stat-label">Seguidos</div></div>
+                </div>
+                <div style="text-align:center; margin:1rem;">
+                    <button class="edit-profile-btn" id="changeColorBtn">COLOR NOMBRE</button>
+                    <input type="color" id="nameColorPicker" style="display:none;" value="${account.nameColor||'#ffffff'}">
+                    <button class="add-post-btn" id="addPostBtn">+ AÑADIR</button>
+                </div>
+                <div class="profile-tabs">
+                    <button class="profile-tab ${profileTab==='posts'?'active':''}" data-tab="posts">Publicaciones</button>
+                    <button class="profile-tab ${profileTab==='reels'?'active':''}" data-tab="reels">Reels</button>
+                    <button class="profile-tab ${profileTab==='videos'?'active':''}" data-tab="videos">Videos</button>
+                </div>
+                <div id="tabContent" class="posts-grid"></div>
             `;
 
-            document.getElementById('profileSearchInput').addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                if (query.length < 2) return;
-                const results = allAccounts.filter(a => a.id !== account.id && a.username.toLowerCase().includes(query));
-                if (results.length > 0) renderSearchResults(results);
+            const renderTab = (tab) => {
+                profileTab = tab;
+                document.querySelectorAll('.profile-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+                const tabDiv = document.getElementById('tabContent');
+                if (tab === 'posts') {
+                    const images = userPosts.filter(p => p.type === 'image');
+                    tabDiv.innerHTML = images.map(p => `<div class="post-item"><img src="${p.data}"></div>`).join('') || '<p style="text-align:center;color:#888;grid-column:span 3;">No hay imágenes.</p>';
+                } else if (tab === 'reels') {
+                    const videos = userPosts.filter(p => p.type === 'video');
+                    tabDiv.innerHTML = videos.map(p => `<div class="post-item"><video src="${p.data}" controls></video></div>`).join('') || '<p style="text-align:center;color:#888;grid-column:span 3;">No hay videos.</p>';
+                } else if (tab === 'videos') {
+                    // mismo contenido que reels, pero diferenciado en el futuro
+                    const videos = userPosts.filter(p => p.type === 'video');
+                    tabDiv.innerHTML = videos.map(p => `<div class="post-item"><video src="${p.data}" controls></video></div>`).join('') || '<p style="text-align:center;color:#888;grid-column:span 3;">No hay videos.</p>';
+                }
+            };
+            renderTab(profileTab);
+
+            document.querySelectorAll('.profile-tab').forEach(b => b.addEventListener('click', (e) => renderTab(e.target.dataset.tab)));
+
+            document.getElementById('profileCover').addEventListener('click', () => document.getElementById('coverPicInput').click());
+            document.getElementById('coverPicInput').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = async (ev) => {
+                    await updateDoc(doc(db, 'accounts', currentUser.id), { coverPic: ev.target.result });
+                    currentUser.coverPic = ev.target.result;
+                    showToast('Portada actualizada.');
+                };
+                reader.readAsDataURL(file);
             });
+
+            document.getElementById('profilePic').addEventListener('click', () => document.getElementById('profilePicInput').click());
+            document.getElementById('profilePicInput').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = async (ev) => {
+                    await updateDoc(doc(db, 'accounts', currentUser.id), { profilePic: ev.target.result });
+                    currentUser.profilePic = ev.target.result;
+                    renderProfileView(currentUser);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            document.getElementById('changeColorBtn').addEventListener('click', () => document.getElementById('nameColorPicker').click());
+            document.getElementById('nameColorPicker').addEventListener('input', async (e) => {
+                document.querySelector('.profile-username').style.color = e.target.value;
+                await updateDoc(doc(db, 'accounts', currentUser.id), { nameColor: e.target.value });
+            });
+
+            document.getElementById('addPostBtn').addEventListener('click', () => {
+                document.getElementById('newPostPanel').classList.add('active');
+                document.getElementById('postFileInput').value = '';
+                document.getElementById('postPreview').innerHTML = '';
+            });
+
+            document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.toggle('active', b.dataset.section === 'miperfil'));
         }
 
-        function renderSearchResults(results) {
-            const container = document.getElementById('appContent');
-            let html = '<div style="margin-top:1rem;"><h4 style="margin-bottom:.5rem;">Resultados:</h4>';
-            results.forEach(acc => {
-                const name = acc.username;
-                html += `
-                    <div style="display:flex; align-items:center; gap:1rem; padding:.5rem; border:1px solid #222; border-radius:8px; margin-bottom:.5rem; cursor:pointer;" class="search-result-item" data-account-id="${acc.id}">
-                        <div class="avatar" style="width:40px; height:40px; font-size:1.2rem;">${name.charAt(0).toUpperCase()}</div>
-                        <div style="flex:1;">${name}</div>
-                        <button class="chat-search-btn" style="background:#fff; color:#000; border:none; padding:.3rem 1rem; border-radius:20px; font-size:.75rem;">Chatear</button>
-                        <button class="report-search-btn" style="background:transparent; border:1px solid #555; color:#fff; padding:.3rem 1rem; border-radius:20px; font-size:.75rem;">Reportar</button>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            container.innerHTML += html;
-
-            document.querySelectorAll('.chat-search-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const item = e.target.closest('.search-result-item');
-                    openChat(item.dataset.accountId);
-                });
-            });
-            document.querySelectorAll('.report-search-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const item = e.target.closest('.search-result-item');
-                    selectedAccountId = item.dataset.accountId;
-                    openReportPanel();
-                });
-            });
-        }
+        document.getElementById('postFileInput').addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const preview = document.getElementById('postPreview');
+            preview.innerHTML = file.type.startsWith('image/') ? `<img src="${URL.createObjectURL(file)}" style="max-width:100%; max-height:200px; border-radius:10px;">` : `<video src="${URL.createObjectURL(file)}" controls style="max-width:100%; max-height:200px; border-radius:10px;"></video>`;
+        });
+        document.getElementById('cancelPostBtn').addEventListener('click', ()=>document.getElementById('newPostPanel').classList.remove('active'));
+        document.getElementById('uploadPostBtn').addEventListener('click', async () => {
+            const file = document.getElementById('postFileInput').files[0];
+            if (!file) { showToast('Selecciona un archivo.'); return; }
+            if (file.size > 100*1024*1024) { showToast('Archivo muy grande (máx 100MB).'); return; }
+            const reader = new FileReader();
+            reader.onload = async ev => {
+                const data = ev.target.result;
+                const type = file.type.startsWith('image/') ? 'image' : 'video';
+                await setDoc(doc(db, 'posts', crypto.randomUUID()), { userId: currentUser.id, username: currentUser.username, type, data, createdAt: serverTimestamp() });
+                showToast('Publicación subida.');
+                document.getElementById('newPostPanel').classList.remove('active');
+                await loadUserPosts();
+                renderProfileView(currentUser);
+            };
+            reader.readAsDataURL(file);
+        });
 
         function openChat(targetId) {
+            if (!currentUser) { showToast('Inicia sesión para chatear.'); return; }
             const target = allAccounts.find(a => a.id === targetId);
             if (!target) return;
             const chatId = [currentUser.id, target.id].sort().join('_');
-            const container = document.getElementById('appContent');
-            container.innerHTML = `
+            document.getElementById('appContent').innerHTML = `
                 <div class="chat-container">
                     <div class="chat-messages" id="chatMessages"></div>
                     <div class="chat-input">
-                        <input type="text" id="chatMessageInput" placeholder="Escribe un mensaje...">
+                        <input type="text" id="chatMessageInput" placeholder="Mensaje...">
                         <button id="sendChatBtn">Enviar</button>
                     </div>
                 </div>
             `;
-
-            const messagesRef = collection(db, 'chats', chatId, 'messages');
-            const q = query(messagesRef, orderBy('timestamp', 'asc'), limit(100));
-            onSnapshot(q, (snapshot) => {
-                const messagesDiv = document.getElementById('chatMessages');
-                messagesDiv.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const msg = doc.data();
-                    const div = document.createElement('div');
-                    div.className = `chat-msg ${msg.senderId === currentUser.id ? 'sent' : 'received'}`;
-                    div.textContent = msg.text;
-                    messagesDiv.appendChild(div);
+            const ref = collection(db, 'chats', chatId, 'messages');
+            onSnapshot(query(ref, orderBy('timestamp','asc'), limit(100)), snap => {
+                const div = document.getElementById('chatMessages');
+                div.innerHTML = '';
+                snap.forEach(d => {
+                    const msg = d.data();
+                    const el = document.createElement('div');
+                    el.className = `chat-msg ${msg.senderId===currentUser.id?'sent':'received'}`;
+                    el.textContent = msg.text;
+                    div.appendChild(el);
                 });
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                div.scrollTop = div.scrollHeight;
             });
-
             document.getElementById('sendChatBtn').addEventListener('click', async () => {
                 const input = document.getElementById('chatMessageInput');
+                if (!input.value.trim()) return;
                 const text = input.value.trim();
-                if (!text) return;
-                await setDoc(doc(messagesRef, crypto.randomUUID()), {
-                    text,
-                    senderId: currentUser.id,
-                    timestamp: serverTimestamp()
-                });
+                await setDoc(doc(ref, crypto.randomUUID()), { text, senderId: currentUser.id, timestamp: serverTimestamp() });
+                if (target.id !== currentUser.id) {
+                    await setDoc(doc(notificationsRef, crypto.randomUUID()), {
+                        recipientId: target.id,
+                        senderId: currentUser.id,
+                        senderName: currentUser.username,
+                        messagePreview: text.slice(0, 50),
+                        timestamp: serverTimestamp()
+                    });
+                }
                 input.value = '';
             });
         }
 
-        // ===================== CREAR CUENTA =====================
-        document.getElementById('openMasterPasswordBtn').addEventListener('click', () => {
-            document.getElementById('masterPasswordPanel').classList.add('active');
-            document.getElementById('masterPasswordInput').value = '';
-            document.getElementById('masterPasswordError').classList.remove('show');
-        });
-        document.getElementById('cancelMasterPasswordBtn').addEventListener('click', () => document.getElementById('masterPasswordPanel').classList.remove('active'));
+        function startNotificationListener() {
+            if (!currentUser) return;
+            const q = query(notificationsRef, where("recipientId", "==", currentUser.id), orderBy("timestamp", "asc"));
+            onSnapshot(q, (snapshot) => {
+                const badge = document.getElementById('unreadBadge');
+                const count = snapshot.size;
+                if (badge) {
+                    badge.textContent = count;
+                    badge.style.display = count > 0 ? 'flex' : 'none';
+                }
+                snapshot.docChanges().forEach(change => {
+                    if (change.type === 'added') {
+                        const data = change.doc.data();
+                        showToast(`Nuevo mensaje de ${data.senderName}: ${data.messagePreview}`, 5000);
+                        deleteDoc(doc(notificationsRef, change.doc.id));
+                    }
+                });
+            });
+        }
+
+        function renderCommunicationSection() {
+            currentSection = 'comunicacion';
+            const friends = allAccounts.filter(a => !currentUser || a.id !== currentUser.id);
+            let html = `<div class="search-bar"><input type="text" id="friendSearchInput" placeholder="Buscar amigo..." value="${friendSearchFilter}"></div><div class="profiles-grid">`;
+            friends.forEach(acc => {
+                const name = acc.username||'?';
+                const isOnline = Math.random() > 0.5;
+                const avatarStyle = acc.profilePic ? `style="background-image:url('${acc.profilePic}');"` : '';
+                html += `<div class="profile-card" data-account-id="${acc.id}">
+                    <div class="avatar" ${avatarStyle}>${acc.profilePic?'':name.charAt(0).toUpperCase()}</div>
+                    <div class="username" style="color:${acc.nameColor||'#fff'}">${name}</div>
+                    <div><span class="status-dot ${isOnline?'online':'offline'}"></span>${isOnline?'En línea':'Desconectado'}</div>
+                    <div class="actions"><button class="chat-btn">Chatear</button></div>
+                </div>`;
+            });
+            html += '</div>';
+            document.getElementById('appContent').innerHTML = html;
+            document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.toggle('active', b.dataset.section === 'comunicacion'));
+
+            function filterGrid(f) {
+                const grid = document.querySelector('.profiles-grid');
+                const filtered = friends.filter(ff => ff.username.toLowerCase().includes(f.toLowerCase()));
+                grid.innerHTML = filtered.map(acc => {
+                    const name = acc.username||'?';
+                    const isOnline = Math.random() > 0.5;
+                    const avatarStyle = acc.profilePic ? `style="background-image:url('${acc.profilePic}');"` : '';
+                    return `<div class="profile-card" data-account-id="${acc.id}">
+                        <div class="avatar" ${avatarStyle}>${acc.profilePic?'':name.charAt(0).toUpperCase()}</div>
+                        <div class="username" style="color:${acc.nameColor||'#fff'}">${name}</div>
+                        <div><span class="status-dot ${isOnline?'online':'offline'}"></span>${isOnline?'En línea':'Desconectado'}</div>
+                        <div class="actions"><button class="chat-btn">Chatear</button></div>
+                    </div>`;
+                }).join('') || '<p style="text-align:center;color:#888;grid-column:span 3;">No se encontraron.</p>';
+                document.querySelectorAll('.chat-btn').forEach(b => b.addEventListener('click', e => openChat(e.target.closest('.profile-card').dataset.accountId)));
+            }
+
+            if (friendSearchFilter) filterGrid(friendSearchFilter);
+
+            document.getElementById('friendSearchInput').addEventListener('input', e => {
+                friendSearchFilter = e.target.value;
+                filterGrid(e.target.value);
+            });
+            document.querySelectorAll('.chat-btn').forEach(b => b.addEventListener('click', e => openChat(e.target.closest('.profile-card').dataset.accountId)));
+        }
+
+        // ----- Control de acceso según jerarquía -----
+        function canAccess(section) {
+            if (!currentUser) return false;
+            const tier = currentUser.hierarchy || 'Gratuito';
+            if (tier === 'Admin' || tier === 'Director') return true;
+            switch (section) {
+                case 'dazerai': return (tier === 'Haiku' || tier === 'Sheitel');
+                case 'haiku': return tier === 'Haiku';
+                case 'sheitel': return tier === 'Sheitel' || tier === 'Haiku'; // Haiku puede ver contenido Sheitel
+                default: return true;
+            }
+        }
+
+        async function checkDailyLimit() {
+            if (!currentUser) return false;
+            const today = new Date().toISOString().slice(0,10);
+            const ref = doc(db, 'dailyLimits', currentUser.id);
+            const snap = await getDoc(ref);
+            let data = snap.exists() ? snap.data() : {};
+            if (data.date !== today) {
+                data = { date: today, count: 0 };
+                await setDoc(ref, data, { merge: true });
+            }
+            const tier = currentUser.hierarchy || 'Gratuito';
+            const limit = tier === 'Haiku' ? 5 : (tier === 'Sheitel' ? 3 : 0);
+            if (data.count >= limit) return false;
+            // incrementar
+            await updateDoc(ref, { count: data.count + 1 });
+            return true;
+        }
+
+        // Secciones controladas
+        const sections = {
+            salon: ()=> renderSalon(),
+            comunicacion: ()=> renderCommunicationSection(),
+            navegar: '<div style="text-align:center;padding:3rem;"><h2>NAVEGAR</h2><p style="color:#aaa;">Explora contenido destacado</p></div>',
+            videos: '<div style="text-align:center;padding:3rem;"><h2>VIDEOS</h2><p style="color:#aaa;">Sección de videos</p></div>',
+            reels: '<div style="text-align:center;padding:3rem;"><h2>REELS</h2><p style="color:#aaa;">Reels cortos estilo TikTok</p></div>',
+            publicacion: '<div style="text-align:center;padding:3rem;"><h2>PUBLICACION</h2><p style="color:#aaa;">Crear nueva publicación</p></div>',
+            bodega: '<div style="text-align:center;padding:3rem;"><h2>BODEGA</h2><p style="color:#aaa;">Almacén</p></div>',
+            atico: '<div style="text-align:center;padding:3rem;"><h2>ÁTICO</h2><p style="color:#aaa;">Exclusivo</p></div>',
+            boveda: '<div style="text-align:center;padding:3rem;"><h2>BÓVEDA</h2><p style="color:#aaa;">Privado</p></div>',
+            gdz: '<div style="text-align:center;padding:3rem;"><h2>GDZ</h2><p style="color:#aaa;">Servicios GDZ</p></div>',
+            suscripcion: () => {
+                if (!currentUser) { document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:3rem;"><p style="color:#aaa;">Debes iniciar sesión.</p></div>'; return; }
+                const tier = currentUser.hierarchy || 'Gratuito';
+                if (tier === 'Gratuito') {
+                    document.getElementById('appContent').innerHTML = `
+                        <div style="text-align:center;padding:2rem;">
+                            <h2>SUSCRIPCIÓN</h2>
+                            <p style="color:#aaa;">Eres Gratuito. Actualízate a Haiku o Sheitel para acceder a DazerAI y contenidos exclusivos.</p>
+                            <p>Haiku: $15/mes, $8/quincena, $5/semana</p>
+                            <p>Sheitel: $5/mes, $3/quincena, $1/semana</p>
+                            <p>Admin y Director tienen acceso completo.</p>
+                        </div>`;
+                } else {
+                    document.getElementById('appContent').innerHTML = `
+                        <div style="text-align:center;padding:2rem;">
+                            <h2>SUSCRIPCIÓN</h2>
+                            <p style="color:#aaa;">Eres ${tier}.</p>
+                            <p>Disfruta de tus beneficios.</p>
+                        </div>`;
+                }
+            },
+            dazerai: async () => {
+                if (!currentUser) { document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:3rem;"><p style="color:#aaa;">Debes iniciar sesión.</p></div>'; return; }
+                if (!canAccess('dazerai')) {
+                    document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:2rem;"><h2>DAZER AI</h2><p style="color:#aaa;">Necesitas ser Haiku o Sheitel para usar DazerAI.</p></div>';
+                    return;
+                }
+                const allowed = await checkDailyLimit();
+                if (!allowed) {
+                    document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:2rem;"><h2>DAZER AI</h2><p style="color:#aaa;">Límite diario alcanzado. Vuelve mañana.</p></div>';
+                    return;
+                }
+                document.getElementById('appContent').innerHTML = `
+                    <div style="text-align:center;padding:2rem;">
+                        <h2>DAZER AI</h2>
+                        <p style="color:#aaa;">Pregúntame algo...</p>
+                        <input type="text" id="aiQuestion" placeholder="Escribe tu pregunta" style="width:100%; padding:1rem; background:#111; border:1px solid #333; border-radius:12px; color:#fff; margin-top:1rem;">
+                        <button id="askAiBtn" style="margin-top:1rem; background:#fff; color:#000; border:none; padding:.8rem 2rem; border-radius:20px;">Preguntar</button>
+                        <div id="aiResponse" style="margin-top:1rem; color:#aaa;"></div>
+                    </div>
+                `;
+                document.getElementById('askAiBtn').addEventListener('click', () => {
+                    const q = document.getElementById('aiQuestion').value.trim();
+                    if (!q) return;
+                    document.getElementById('aiResponse').innerText = "Procesando... (simulación)";
+                    setTimeout(() => {
+                        document.getElementById('aiResponse').innerText = "Respuesta simulada: " + q.split('').reverse().join('');
+                    }, 1000);
+                });
+            },
+            haiku: () => {
+                if (!currentUser) { document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:3rem;"><p style="color:#aaa;">Debes iniciar sesión.</p></div>'; return; }
+                if (!canAccess('haiku')) {
+                    document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:2rem;"><h2>CONTENIDO DE HAIKU</h2><p style="color:#aaa;">Solo para suscriptores Haiku.</p></div>';
+                    return;
+                }
+                document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:3rem;"><h2>CONTENIDO DE HAIKU</h2><p style="color:#aaa;">Aquí va el contenido exclusivo para Haiku.</p></div>';
+            },
+            sheitel: () => {
+                if (!currentUser) { document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:3rem;"><p style="color:#aaa;">Debes iniciar sesión.</p></div>'; return; }
+                if (!canAccess('sheitel')) {
+                    document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:2rem;"><h2>CONTENIDO DE SHEITEL</h2><p style="color:#aaa;">Solo para suscriptores Sheitel (o Haiku).</p></div>';
+                    return;
+                }
+                document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:3rem;"><h2>CONTENIDO DE SHEITEL</h2><p style="color:#aaa;">Aquí va el contenido exclusivo para Sheitel.</p></div>';
+            },
+            inteligente: '<div style="text-align:center;padding:3rem;"><h2>CONTENIDO INTELIGENTE</h2><p style="color:#aaa;">Avanzado</p></div>',
+            modus: '<div style="text-align:center;padding:3rem;"><h2>MODUS</h2><p style="color:#aaa;">Modo de uso</p></div>',
+            configuracion: '<div style="text-align:center;padding:3rem;"><h2>CONFIGURACIÓN</h2><p style="color:#aaa;">Ajustes</p></div>',
+            miperfil: () => currentUser ? renderProfileView(currentUser) : document.getElementById('appContent').innerHTML = '<div style="text-align:center;padding:3rem;"><p style="color:#aaa;">Debes iniciar sesión.</p></div>'
+        };
+
+        function switchSection(s) {
+            const content = sections[s];
+            if (typeof content === 'function') content();
+            else if (typeof content === 'string') {
+                document.getElementById('appContent').innerHTML = content;
+                document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.toggle('active', b.dataset.section === s));
+            }
+            currentSection = s;
+        }
+
+        document.querySelectorAll('.bottom-nav button').forEach(b => b.addEventListener('click', () => switchSection(b.dataset.section)));
+
+        // ----- Creación de cuenta (con nuevo campo Sheitel) -----
         document.getElementById('verifyMasterPasswordBtn').addEventListener('click', () => {
             if (document.getElementById('masterPasswordInput').value === MASTER_PASSWORD) {
                 document.getElementById('masterPasswordPanel').classList.remove('active');
                 document.getElementById('createAccountPanel').classList.add('active');
-                document.getElementById('newUsername').value = '';
-                document.getElementById('newPassword').value = '';
-                document.getElementById('newBirthdate').value = '';
+                ['newUsername','newPassword','newBirthdate'].forEach(id => document.getElementById(id).value = '');
                 document.getElementById('newHierarchy').value = 'Gratuito';
                 document.getElementById('createAccountError').classList.remove('show');
-            } else {
-                document.getElementById('masterPasswordError').classList.add('show');
-            }
+            } else document.getElementById('masterPasswordError').classList.add('show');
         });
-        document.getElementById('cancelCreateAccountBtn').addEventListener('click', () => document.getElementById('createAccountPanel').classList.remove('active'));
+        document.getElementById('cancelMasterPasswordBtn').addEventListener('click', ()=>document.getElementById('masterPasswordPanel').classList.remove('active'));
+        document.getElementById('cancelCreateAccountBtn').addEventListener('click', ()=>document.getElementById('createAccountPanel').classList.remove('active'));
 
         document.getElementById('createAccountBtn').addEventListener('click', async () => {
             const username = document.getElementById('newUsername').value.trim();
             const password = document.getElementById('newPassword').value;
             const birthdate = document.getElementById('newBirthdate').value;
             const hierarchy = document.getElementById('newHierarchy').value;
-            const errorEl = document.getElementById('createAccountError');
-            if (!username || !password || !birthdate) { errorEl.textContent = 'Complete todos los campos'; errorEl.classList.add('show'); return; }
-            if (allAccounts.some(a => a.username && a.username.toLowerCase() === username.toLowerCase())) {
-                errorEl.textContent = 'Ese nombre ya existe. Elige otro.';
-                errorEl.classList.add('show');
-                return;
-            }
+            const err = document.getElementById('createAccountError');
+            if (!username || !password || !birthdate) { err.textContent='Completa todos los campos'; err.classList.add('show'); return; }
+            if (allAccounts.some(a => a.username?.toLowerCase() === username.toLowerCase())) { err.textContent='Nombre ya existe'; err.classList.add('show'); return; }
             try {
                 const counterRef = doc(db, 'stats', 'accountCounter');
-                const counterSnap = await getDoc(counterRef);
-                const currentCount = counterSnap.exists() ? (counterSnap.data().count || 0) : 0;
-                if (currentCount >= MAX_ACCOUNTS) { showToast('Límite de 1000 cuentas alcanzado.'); return; }
-
-                const accRef = doc(db, 'accounts', crypto.randomUUID());
-                await setDoc(accRef, { username, password, birthdate, hierarchy, createdAt: serverTimestamp() });
-
-                await runTransaction(db, async (transaction) => {
-                    const freshSnap = await transaction.get(counterRef);
-                    const newCount = (freshSnap.exists() ? freshSnap.data().count : 0) + 1;
-                    if (newCount > MAX_ACCOUNTS) throw new Error('Límite excedido.');
-                    transaction.set(counterRef, { count: newCount }, { merge: true });
+                const snap = await getDoc(counterRef);
+                if ((snap.exists()?snap.data().count:0) >= MAX_ACCOUNTS) { showToast('Límite de 1000 cuentas alcanzado.'); return; }
+                await setDoc(doc(db, 'accounts', crypto.randomUUID()), { username, password, birthdate, hierarchy, nameColor:'#ffffff', profilePic:'', coverPic:'', bio:'', createdAt:serverTimestamp() });
+                await runTransaction(db, async t => {
+                    const fresh = await t.get(counterRef);
+                    t.set(counterRef, { count: (fresh.exists()?fresh.data().count:0)+1 }, { merge:true });
                 });
-
                 showToast(`Cuenta "${username}" creada.`);
                 document.getElementById('createAccountPanel').classList.remove('active');
                 await loadAccounts();
-                if (!currentUser) renderAccounts('');
-            } catch (error) {
-                console.error(error);
-                showToast('Error al crear cuenta.');
-            }
+                if (!currentUser) renderWelcomeScreen();
+            } catch(e) { console.error(e); showToast('Error al crear cuenta.'); }
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            currentUser = null;
-            document.getElementById('logoutBtn').style.display = 'none';
-            showToast('Sesión cerrada.');
-            renderAccounts('');
-        });
-
-        // ===================== BARRA DE NAVEGACIÓN =====================
-        const sectionContents = {
-            comercial: '<div style="text-align:center;padding:3rem 1rem;"><h2 style="font-family:Orbitron;letter-spacing:.1em;">COMERCIAL</h2><p style="color:#888;margin-top:1rem;">Espacio publicitario DAZER</p></div>',
-            navegar: '<div style="text-align:center;padding:3rem 1rem;"><h2 style="font-family:Orbitron;letter-spacing:.1em;">NAVEGAR</h2><p style="color:#888;margin-top:1rem;">Explora contenido destacado</p></div>',
-            videos: '<div style="text-align:center;padding:3rem 1rem;"><h2 style="font-family:Orbitron;letter-spacing:.1em;">VIDEOS</h2><p style="color:#888;margin-top:1rem;">Sección de videos (Netflix-like)</p></div>',
-            reels: '<div style="text-align:center;padding:3rem 1rem;"><h2 style="font-family:Orbitron;letter-spacing:.1em;">REELS</h2><p style="color:#888;margin-top:1rem;">Reels cortos estilo TikTok</p></div>',
-            suscripcion: '<div style="text-align:center;padding:3rem 1rem;"><h2 style="font-family:Orbitron;letter-spacing:.1em;">SUSCRIPCION</h2><p style="color:#888;margin-top:1rem;">Planes y beneficios</p></div>',
-            ajustes: '<div style="text-align:center;padding:3rem 1rem;"><h2 style="font-family:Orbitron;letter-spacing:.1em;">AJUSTES</h2><p style="color:#888;margin-top:1rem;">Configuración de la cuenta</p></div>',
-            miperfil: '<div style="text-align:center;padding:3rem 1rem;"><h2 style="font-family:Orbitron;letter-spacing:.1em;">MI PERFIL</h2><p style="color:#888;margin-top:1rem;">Tu perfil personal</p></div>'
-        };
-
-        function switchSection(section) {
-            if (currentUser && section === 'miperfil') {
-                renderProfileView(currentUser);
-            } else if (section === 'comercial' && !currentUser) {
-                renderAccounts('');
-            } else {
-                document.getElementById('appContent').innerHTML = sectionContents[section] || sectionContents.comercial;
-            }
-            currentSection = section;
-            document.querySelectorAll('.bottom-nav button').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.section === section);
-            });
-        }
-
-        document.querySelectorAll('.bottom-nav button').forEach(btn => {
-            btn.addEventListener('click', () => {
-                switchSection(btn.dataset.section);
-            });
-        });
-
-        // ===================== INICIO =====================
+        // ----- Inicio -----
         window.addEventListener('DOMContentLoaded', async () => {
             await runSplashSequence();
             setTimeout(showInstallModal, 600);
             await loadAccounts();
-            renderAccounts(''); // Pantalla inicial vacía
+            toggleBottomNav(false);
+            updateHeaderButtons();
+            renderWelcomeScreen();
         });
     </script>
 </body>
 </html>
+    
